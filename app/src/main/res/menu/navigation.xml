@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_dogs"
+        android:icon="@drawable/ic_pets_black_24dp"
+        android:title="@string/title_dogs" />
+
+    <item
+        android:id="@+id/navigation_owners"
+        android:icon="@drawable/ic_people_black_24dp"
+        android:title="@string/title_owners" />
+</menu>

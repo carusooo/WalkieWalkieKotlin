@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WalkieWalkie</string>
+    <string name="title_dogs">Dogs</string>
+    <string name="title_owners">Owners</string>
+</resources>
