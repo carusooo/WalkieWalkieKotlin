@@ -2,4 +2,17 @@
     <string name="app_name">WalkieWalkie</string>
     <string name="title_dogs">Dogs</string>
     <string name="title_owners">Owners</string>
+    <string name="title_walks">Walks</string>
+
+    <string-array name="walk_reminder_durations">
+        <item>5 min</item>
+        <item>10 min</item>
+        <item>15 min</item>
+        <item>20 min</item>
+        <item>30 min</item>
+        <item>45 min</item>
+        <item>60 min</item>
+    </string-array>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

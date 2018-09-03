@@ -9,5 +9,12 @@
     <dimen name="card_two_line_title_text_size">16sp</dimen>
     <dimen name="card_two_line_subtitle_text_size">14sp</dimen>
     <dimen name="card_two_line_subimage_height">24dp</dimen>
+    <dimen name="card_grid_margin">8dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
 
 </resources>

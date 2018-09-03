@@ -10,4 +10,8 @@
         android:id="@+id/navigation_owners"
         android:icon="@drawable/ic_people_black_24dp"
         android:title="@string/title_owners" />
+
+    <item android:id="@+id/navigation_walks"
+        android:icon="@drawable/ic_walk_black_24dp"
+        android:title="@string/title_walks"/>
 </menu>
