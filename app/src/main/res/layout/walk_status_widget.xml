@@ -3,13 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorDarkTransparent"
-    android:topMargin="@dimen/widget_margin">
+    >
 
     <GridView
         android:id="@+id/walk_widget_list"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:padding="2dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:itemCount="5"
