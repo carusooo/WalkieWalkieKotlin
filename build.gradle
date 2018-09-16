@@ -22,7 +22,7 @@ allprojects {
     }
 
     ext {
-        androidSupportVersion = "27+"
+        androidSupportVersion = "27.1.0"
 
     }
 }

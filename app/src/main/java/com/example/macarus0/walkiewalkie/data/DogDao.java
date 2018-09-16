@@ -3,7 +3,9 @@ package com.example.macarus0.walkiewalkie.data;
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
@@ -14,9 +16,14 @@ public interface DogDao {
     LiveData<List<Dog>> getAllDogs();
 
     @Query("Select * from dog where ownerId1 = :ownerId OR ownerId2 = :ownerId")
-    LiveData<List<Dog>> getDogsByOwner(int ownerId);
+    LiveData<List<Dog>> getDogsByOwner(long ownerId);
+
+    @Query("Select * from dog where dogId = :dogId")
+    LiveData<Dog> getDogById(long dogId);
 
     @Insert
-    void insertDog(Dog dog);
+    long[] insertDog(Dog...dogs);
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateDog(Dog...dogs);
 }

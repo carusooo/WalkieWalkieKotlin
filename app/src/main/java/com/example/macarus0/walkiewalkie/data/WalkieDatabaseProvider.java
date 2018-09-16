@@ -16,8 +16,7 @@ public class WalkieDatabaseProvider {
     }
 
     private static WalkieDatabase createDatabase(Context context) {
-        WalkieDatabase walkieDatabase = Room.inMemoryDatabaseBuilder(context.getApplicationContext(), WalkieDatabase.class).build();
-        return walkieDatabase;
+        return Room.inMemoryDatabaseBuilder(context.getApplicationContext(), WalkieDatabase.class).build();
     }
 
 }

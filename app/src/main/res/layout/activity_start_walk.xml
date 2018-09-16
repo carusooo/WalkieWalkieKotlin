@@ -33,7 +33,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         tools:text="Photo reminder time" />
 
                     <android.support.v7.widget.AppCompatSpinner
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 tools:itemCount="13"
                 tools:layoutManager="android.support.v7.widget.GridLayoutManager"
-                tools:listitem="@layout/dog_card"
+                tools:listitem="@layout/contact_card"
                 tools:spanCount="3"
                >
 

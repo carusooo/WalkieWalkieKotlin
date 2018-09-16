@@ -15,4 +15,16 @@
     </string-array>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="add_dog">Add dog</string>
+    <string name="add_owner">Add owner</string>
+    <string name="add_dog_name_hint">Dog Name</string>
+    <string name="add_address_hint">Address</string>
+    <string name="add_owner_first_name_hint">First Name</string>
+    <string name="add_owner_last_name_hint">Last Name</string>
+    <string name="add_owner_email_hint">Email</string>
+    <string name="add_owner_phone_number_hint">Phone Number</string>
+    <string name="select_dog_photo_activity_title">Select a dog photo</string>
+    <string name="select_owner_photo_activity_title">Select an owner photo</string>
+    <string name="save_contact_edits">SAVE</string>
+    <string name="title_activity_owner_contact">OwnerContactActivity</string>
 </resources>

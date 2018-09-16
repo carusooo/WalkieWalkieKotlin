@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.constraint.ConstraintLayout
@@ -11,72 +12,78 @@
         >
 
         <ImageView
-            android:id="@+id/dog_image"
+            android:id="@+id/owner_image"
             android:layout_width="@dimen/card_two_line_image_height"
             android:layout_height="@dimen/card_two_line_image_height"
             android:layout_margin="@dimen/card_two_line_image_vertical_margin"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:src="@drawable/ic_pets_black_24dp"
+            tools:src="@drawable/ic_person_black_24dp"
             />
+
         <TextView
-            android:id="@+id/dog_name"
+            android:id="@+id/owner_name"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/card_two_line_title_height"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:layout_marginStart="@dimen/card_two_line_image_vertical_margin"
-            app:layout_constraintStart_toEndOf="@id/dog_image"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="4dp"
+            android:maxLines="2"
             android:textSize="@dimen/card_two_line_title_text_size"
-            tools:text="Dogname"/>
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/dog2_name"
+            app:layout_constraintStart_toEndOf="@id/owner_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Firstname Lastname" />
 
         <ImageView
-            android:id="@+id/owner1_image"
+            android:id="@+id/dog1_image"
             android:layout_width="@dimen/card_two_line_subimage_height"
             android:layout_height="@dimen/card_two_line_subimage_height"
             android:layout_marginTop="@dimen/card_two_line_image_vertical_margin"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="@id/owner1_name"
-            app:layout_constraintEnd_toEndOf="@id/owner1_name"
-            app:layout_constraintBottom_toTopOf="@id/owner1_name"
-            tools:src="@drawable/ic_person_black_24dp"
+            app:layout_constraintStart_toStartOf="@id/dog1_name"
+            app:layout_constraintEnd_toEndOf="@id/dog1_name"
+            app:layout_constraintBottom_toTopOf="@id/dog1_name"
+            tools:src="@drawable/ic_pets_black_24dp"
             />
         <TextView
-            android:id="@+id/owner1_name"
+            android:id="@+id/dog1_name"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/card_two_line_title_height"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="@dimen/card_two_line_image_vertical_margin"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/owner1_image"
+            app:layout_constraintTop_toBottomOf="@id/dog1_image"
             app:layout_constraintBottom_toBottomOf="parent"
             android:textSize="@dimen/card_two_line_title_text_size"
-            tools:text="Owner1"/>
+            tools:text="Dogname1"/>
 
         <ImageView
-            android:id="@+id/owner2_image"
+            android:id="@+id/dog2_image"
             android:layout_width="@dimen/card_two_line_subimage_height"
             android:layout_height="@dimen/card_two_line_subimage_height"
             android:layout_marginTop="@dimen/card_two_line_image_vertical_margin"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/owner2_name"
-            app:layout_constraintStart_toStartOf="@id/owner2_name"
-            app:layout_constraintEnd_toEndOf="@id/owner2_name"
-            tools:src="@drawable/ic_person_black_24dp"
+            app:layout_constraintBottom_toTopOf="@id/dog2_name"
+            app:layout_constraintStart_toStartOf="@id/dog2_name"
+            app:layout_constraintEnd_toEndOf="@id/dog2_name"
+            tools:src="@drawable/ic_pets_black_24dp"
             />
         <TextView
-            android:id="@+id/owner2_name"
+            android:id="@+id/dog2_name"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/card_two_line_title_height"
             android:layout_marginTop="4dp"
             android:layout_marginStart="@dimen/card_two_line_image_vertical_margin"
             android:layout_marginEnd="@dimen/card_two_line_image_vertical_margin"
-            app:layout_constraintEnd_toStartOf="@id/owner1_name"
-            app:layout_constraintTop_toBottomOf="@id/owner2_image"
+            app:layout_constraintEnd_toStartOf="@id/dog1_name"
+            app:layout_constraintTop_toBottomOf="@id/dog2_image"
             app:layout_constraintBottom_toBottomOf="parent"
             android:textSize="@dimen/card_two_line_title_text_size"
-            tools:text="Owner2"/>
+            tools:text="Dogname2"/>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/dog_image"
+        android:id="@+id/contact_image"
         tools:src="@drawable/ic_pets_black_24dp"
         android:scaleType="fitCenter"
         android:layout_width="match_parent"

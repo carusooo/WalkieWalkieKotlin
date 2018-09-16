@@ -1,8 +1,6 @@
 package com.example.macarus0.walkiewalkie;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -20,16 +18,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -74,7 +68,7 @@ public class WalkieDatabaseTest {
     }
 
     @Test
-    public void addDog() throws Exception {
+    public void addDog() {
         String dogName = "Pippin";
         Dog dog = new Dog();
         dog.setName(dogName);
@@ -83,7 +77,7 @@ public class WalkieDatabaseTest {
     }
 
     @Test
-    public void addOwner() throws Exception {
+    public void addOwner() {
         String ownerName = "Andy";
         Owner owner = new Owner();
         owner.setFirstName(ownerName);
