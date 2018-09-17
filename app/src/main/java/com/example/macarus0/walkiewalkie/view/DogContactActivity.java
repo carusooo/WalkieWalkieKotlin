@@ -8,13 +8,17 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.data.Dog;
+import com.example.macarus0.walkiewalkie.data.Owner;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -25,8 +29,10 @@ public class DogContactActivity extends AppCompatActivity {
 
     public static final String DOG_ID = "dog_id";
     public static final int ADD_DOG = -1;
-
     public static final int SELECT_PICTURE = 101;
+    public static final int SELECT_OWNER1 = 102;
+    public static final int SELECT_OWNER2 = 103;
+    private static final String TAG = "DogContactActivity";
     @BindView(R.id.dog_photo)
     ConstraintLayout dogPhoto;
     @BindView(R.id.dog_name)
@@ -81,21 +87,79 @@ public class DogContactActivity extends AppCompatActivity {
         } else {
             mWalkieViewModel.getDogById(mDogId).observe(this, dog -> showDogUI(dog));
         }
+
+        owner1CardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectOwner(SELECT_OWNER1);
+            }
+        });
+        owner2CardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectOwner(SELECT_OWNER2);
+            }
+        });
+
     }
 
     void showAddDogUI() {
         dogName.setHint(getString(R.string.add_dog_name_hint));
         dogAddress.setHint(getString(R.string.add_address_hint));
         dogImageView.setImageResource(R.drawable.ic_default_dog_24dp);
-        owner1CardView.findViewById(R.id.owner1_image);
+        showAddOwner1UI();
+        showAddOwner2UI();
     }
 
     void showDogUI(Dog dog) {
         mDog = dog;
+        Log.i(TAG, "showDogUI: " + dog.getOwnerId1());
+        if (dog.getOwnerId1() != 0) {
+            mWalkieViewModel.getOwnerById(dog.getOwnerId1()).observe(this, owner -> showOwner1UI(owner));
+        } else {
+            showAddOwner1UI();
+        }
+
+        if (dog.getOwnerId2() != 0) {
+            mWalkieViewModel.getOwnerById(dog.getOwnerId2()).observe(this, owner -> showOwner2UI(owner));
+        } else {
+            showAddOwner2UI();
+        }
+
         dogName.setText(dog.getName());
         dogAddress.setText(dog.getAddress());
         Picasso.get().load(dog.getPhoto()).placeholder(R.drawable.ic_default_dog_24dp).into(dogImageView);
-        owner1CardView.findViewById(R.id.owner1_image);
+    }
+
+    void showOwner1UI(Owner owner) {
+        showOwnerUI(owner, owner1CardView);
+    }
+
+    void showOwner2UI(Owner owner) {
+        showOwnerUI(owner, owner2CardView);
+    }
+
+    void showOwnerUI(Owner owner, CardView cardView) {
+        ImageView ownerImageView = cardView.findViewById(R.id.contact_image);
+        TextView ownerNameTextView = cardView.findViewById(R.id.contact_name);
+        ImageButton ownerRemoveButton = cardView.findViewById(R.id.contact_remove);
+        Picasso.get().load(owner.getPhoto()).placeholder(R.drawable.ic_default_owner_24dp).into(ownerImageView);
+        ownerNameTextView.setText(owner.getFirstName());
+    }
+
+    void showAddOwner1UI() {
+        showAddOwnerUI(owner1CardView);
+    }
+
+    void showAddOwner2UI() {
+        showAddOwnerUI(owner2CardView);
+    }
+
+    void showAddOwnerUI(CardView cardView) {
+        ImageView ownerImageView = cardView.findViewById(R.id.contact_image);
+        TextView ownerNameTextView = cardView.findViewById(R.id.contact_name);
+        Picasso.get().load(R.drawable.ic_default_owner_24dp).into(ownerImageView);
+        ownerNameTextView.setText(getText(R.string.add_owner));
     }
 
     void selectImage() {
@@ -112,9 +176,22 @@ public class DogContactActivity extends AppCompatActivity {
                 Uri selectedImageUri = data.getData();
                 Picasso.get().load(selectedImageUri).into(dogImageView);
                 mDog.setPhoto(selectedImageUri.toString());
+            } else if (requestCode == SELECT_OWNER1) {
+                long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, -1);
+                mDog.setOwnerId1(ownerId);
+                mWalkieViewModel.getOwnerById(ownerId).observe(this, owner -> showOwner1UI(owner));
+            } else if (requestCode == SELECT_OWNER2) {
+                long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, -1);
+                mDog.setOwnerId2(ownerId);
+                mWalkieViewModel.getOwnerById(ownerId).observe(this, owner -> showOwner2UI(owner));
+                mWalkieViewModel.addDogToOwner(mDog.getDogId(), ownerId);
             }
         }
+    }
 
+    void selectOwner(int ownerSlot) {
+        Intent intent = new Intent(this, SelectOwnerActivity.class);
+        startActivityForResult(intent, ownerSlot);
     }
 
     void saveChanges() {
@@ -122,8 +199,11 @@ public class DogContactActivity extends AppCompatActivity {
         mDog.setAddress(dogAddress.getText().toString());
         if (mDogId == -1) {
             mWalkieViewModel.insertDog(mDog).observe(this, id -> setmDogId(id));
+        } else {
+            new Thread(() -> {
+                mWalkieViewModel.updateDog(mDog);
+            }).start();
         }
     }
-
 
 }

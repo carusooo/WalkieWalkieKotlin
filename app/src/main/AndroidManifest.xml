@@ -35,7 +35,10 @@
         <activity
             android:name=".view.OwnerContactActivity"
             android:label="@string/title_activity_owner_contact"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".view.SelectOwnerActivity"></activity>
+        <activity android:name=".view.SelectDogActivity"></activity>
+
     </application>
 
 </manifest>

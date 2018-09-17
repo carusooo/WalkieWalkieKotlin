@@ -28,6 +28,12 @@ public class OwnerListAdapter extends RecyclerView.Adapter<OwnerListAdapter.View
 
     private OwnerClickHandler mOwnerClickHandler;
 
+    public void setShowDogs(boolean mShowDogs) {
+        this.mShowDogs = mShowDogs;
+    }
+
+    private boolean mShowDogs;
+
 
     public void setOwners(List<Owner> owners) {
         mOwners = owners;

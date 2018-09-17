@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements DogListAdapter.Do
     }
 
     private void showWalksList() {
-        mAddItemButton.setVisibility(View.INVISIBLE);
+        mAddItemButton.setVisibility(View.GONE);
 
     }
 

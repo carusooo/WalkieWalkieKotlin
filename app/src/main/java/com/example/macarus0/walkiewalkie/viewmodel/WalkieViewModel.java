@@ -26,7 +26,7 @@ public class WalkieViewModel extends AndroidViewModel {
     }
 
     private WalkieDatabase getDb() {
-        if(mDb == null){
+        if (mDb == null) {
             mDb = WalkieDatabaseProvider.getDatabase(applicationContext);
         }
         return mDb;
@@ -44,11 +44,31 @@ public class WalkieViewModel extends AndroidViewModel {
         return getDb().getWalkDao().getAllWalks();
     }
 
-    public LiveData<Dog> getDogById(long id) { return getDb().getDogDao().getDogById(id);}
+    public LiveData<Dog> getDogById(long id) {
+        return getDb().getDogDao().getDogById(id);
+    }
 
-    public void updateDog(Dog dog){ getDb().getDogDao().updateDog(dog);}
+    public void updateDog(Dog dog) {
+        getDb().getDogDao().updateDog(dog);
+    }
 
-    public LiveData<Long> insertDog(Dog dog){
+    public void addDogToOwner(long dogId, long ownerId) {
+        // Get the owner object and add the dog in slot one or two
+    }
+
+    public void removeDogFromOwner(long dogId, long ownerId) {
+
+    }
+
+    public void addOwnerToDog(long ownerId, long dogId) {
+        // Get the dog object and add the owner in slot one or two
+    }
+
+    public void removeOwnerFromDog(long ownerId, long dogId) {
+
+    }
+
+    public LiveData<Long> insertDog(Dog dog) {
         MutableLiveData<Long> rowId = new MutableLiveData<>();
         Runnable r = new Runnable() {
             @Override
@@ -61,9 +81,11 @@ public class WalkieViewModel extends AndroidViewModel {
         return rowId;
     }
 
-    public LiveData<Owner> getOwnerById(long id) { return getDb().getOwnerDao().getOwnerById(id);}
+    public LiveData<Owner> getOwnerById(long id) {
+        return getDb().getOwnerDao().getOwnerById(id);
+    }
 
-    public void updateOwner(Owner owner){
+    public void updateOwner(Owner owner) {
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -73,7 +95,7 @@ public class WalkieViewModel extends AndroidViewModel {
         new Thread(r).start();
     }
 
-    public LiveData<Long> insertOwner(Owner owner){
+    public LiveData<Long> insertOwner(Owner owner) {
         MutableLiveData<Long> rowId = new MutableLiveData<>();
         Runnable r = new Runnable() {
             @Override

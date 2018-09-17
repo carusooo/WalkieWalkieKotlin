@@ -9,8 +9,8 @@ public class Owner {
 
     @PrimaryKey(autoGenerate = true)
     int ownerId;
-    int dogId1;
-    int dogId2;
+    long dogId1;
+    long dogId2;
     String photo;
     String firstName;
     String lastName;
@@ -29,22 +29,22 @@ public class Owner {
     }
 
     @Ignore
-    public int getDogId1() {
+    public long getDogId1() {
         return dogId1;
     }
 
     @Ignore
-    public void setDogId1(int dogId1) {
+    public void setDogId1(long dogId1) {
         this.dogId1 = dogId1;
     }
 
     @Ignore
-    public int getDogId2() {
+    public long getDogId2() {
         return dogId2;
     }
 
     @Ignore
-    public void setDogId2(int dogId2) {
+    public void setDogId2(long dogId2) {
         this.dogId2 = dogId2;
     }
 

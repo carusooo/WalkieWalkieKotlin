@@ -10,8 +10,8 @@ public class Dog {
     @PrimaryKey(autoGenerate = true)
     int dogId;
 
-    int ownerId1;
-    int ownerId2;
+    long ownerId1;
+    long ownerId2;
     String name;
     String note;
     String photo;
@@ -22,23 +22,19 @@ public class Dog {
         return dogId;
     }
     @Ignore
-    public void setDogId(int dogId) {
-        this.dogId = dogId;
-    }
-    @Ignore
-    public int getOwnerId1() {
+    public long getOwnerId1() {
         return ownerId1;
     }
     @Ignore
-    public void setOwnerId1(int ownerId1) {
+    public void setOwnerId1(long ownerId1) {
         this.ownerId1 = ownerId1;
     }
     @Ignore
-    public int getOwnerId2() {
+    public long getOwnerId2() {
         return ownerId2;
     }
     @Ignore
-    public void setOwnerId2(int ownerId2) {
+    public void setOwnerId2(long ownerId2) {
         this.ownerId2 = ownerId2;
     }
     @Ignore

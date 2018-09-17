@@ -22,11 +22,19 @@ public class DogListAdapter extends RecyclerView.Adapter<DogListAdapter.ViewHold
 
     private List<Dog> mDogs;
 
+    private static final String TAG = "DogListAdapter";
+
     public void setDogClickHandler(DogClickHandler mDogClickHandler) {
         this.mDogClickHandler = mDogClickHandler;
     }
 
     private DogClickHandler mDogClickHandler;
+
+    public void setShowOwners(boolean mShowOwners) {
+        this.mShowOwners = mShowOwners;
+    }
+
+    private boolean mShowOwners;
 
     public void setDogs(List<Dog> dogs) {
         mDogs = dogs;
@@ -52,7 +60,6 @@ public class DogListAdapter extends RecyclerView.Adapter<DogListAdapter.ViewHold
     @Override
     public int getItemCount() {
         if(mDogs == null) {
-            String TAG = "DogListAdapter";
             Log.i(TAG, "getItemCount: No Dogs Yet");
             return 0;
         }

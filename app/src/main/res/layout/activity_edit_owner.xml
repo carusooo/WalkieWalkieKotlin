@@ -100,9 +100,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/owner_address">
 
-        <include layout="@layout/contact_card" />
+        <include
+            android:id="@+id/dog1_card"
+            layout="@layout/contact_card" />
 
-        <include layout="@layout/contact_card" />
+        <include
+            android:id="@+id/dog2_card"
+            layout="@layout/contact_card" />
 
 
     </android.support.v7.widget.LinearLayoutCompat>
