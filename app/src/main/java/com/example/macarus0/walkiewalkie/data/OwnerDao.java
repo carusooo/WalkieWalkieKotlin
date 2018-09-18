@@ -18,8 +18,14 @@ public interface OwnerDao {
     @Query("Select * from owner where dogId1 = :dogId OR dogId2= :dogId")
     LiveData<List<Owner>> getOwnersbyDog(int dogId);
 
+    @Query("Select * from owner where dogId1 = 0 OR dogId2= 0")
+    LiveData<List<Owner>> getAvailableOwners();
+
     @Query("Select * from owner where ownerId = :ownerId")
     LiveData<Owner> getOwnerById(long ownerId);
+
+    @Query("Select * from owner where ownerId = :ownerId")
+    Owner getOwnerByIdSync(long ownerId);
 
     @Insert
     long[] insertOwner(Owner...owners);

@@ -51,8 +51,9 @@ public class DogContactActivity extends AppCompatActivity {
     private Dog mDog;
     private WalkieViewModel mWalkieViewModel;
 
-    public void setmDogId(long mDogId) {
+    public void setDogId(long mDogId) {
         this.mDogId = mDogId;
+        this.mDog.setDogId(mDogId);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class DogContactActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveChanges();
+                saveFieldChanges();
             }
         });
 
@@ -143,6 +144,13 @@ public class DogContactActivity extends AppCompatActivity {
         ImageView ownerImageView = cardView.findViewById(R.id.contact_image);
         TextView ownerNameTextView = cardView.findViewById(R.id.contact_name);
         ImageButton ownerRemoveButton = cardView.findViewById(R.id.contact_remove);
+        ownerRemoveButton.setVisibility(View.VISIBLE);
+        ownerRemoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeOwner(owner.getOwnerId(), cardView);
+            }
+        });
         Picasso.get().load(owner.getPhoto()).placeholder(R.drawable.ic_default_owner_24dp).into(ownerImageView);
         ownerNameTextView.setText(owner.getFirstName());
     }
@@ -158,6 +166,8 @@ public class DogContactActivity extends AppCompatActivity {
     void showAddOwnerUI(CardView cardView) {
         ImageView ownerImageView = cardView.findViewById(R.id.contact_image);
         TextView ownerNameTextView = cardView.findViewById(R.id.contact_name);
+        ImageButton ownerRemoveButton = cardView.findViewById(R.id.contact_remove);
+        ownerRemoveButton.setVisibility(View.INVISIBLE);
         Picasso.get().load(R.drawable.ic_default_owner_24dp).into(ownerImageView);
         ownerNameTextView.setText(getText(R.string.add_owner));
     }
@@ -177,33 +187,46 @@ public class DogContactActivity extends AppCompatActivity {
                 Picasso.get().load(selectedImageUri).into(dogImageView);
                 mDog.setPhoto(selectedImageUri.toString());
             } else if (requestCode == SELECT_OWNER1) {
-                long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, -1);
+                long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, 0);
                 mDog.setOwnerId1(ownerId);
                 mWalkieViewModel.getOwnerById(ownerId).observe(this, owner -> showOwner1UI(owner));
+                mWalkieViewModel.addDogToOwner(mDog.getDogId(), ownerId);
+                mWalkieViewModel.updateDog(mDog);
             } else if (requestCode == SELECT_OWNER2) {
-                long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, -1);
+                long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, 0);
                 mDog.setOwnerId2(ownerId);
                 mWalkieViewModel.getOwnerById(ownerId).observe(this, owner -> showOwner2UI(owner));
                 mWalkieViewModel.addDogToOwner(mDog.getDogId(), ownerId);
+                mWalkieViewModel.updateDog(mDog);
             }
         }
     }
 
     void selectOwner(int ownerSlot) {
+        saveFieldChanges();
         Intent intent = new Intent(this, SelectOwnerActivity.class);
         startActivityForResult(intent, ownerSlot);
     }
 
-    void saveChanges() {
+    void saveFieldChanges() {
         mDog.setName(dogName.getText().toString());
         mDog.setAddress(dogAddress.getText().toString());
         if (mDogId == -1) {
-            mWalkieViewModel.insertDog(mDog).observe(this, id -> setmDogId(id));
+            mWalkieViewModel.insertDog(mDog).observe(this, id -> setDogId(id));
         } else {
-            new Thread(() -> {
-                mWalkieViewModel.updateDog(mDog);
-            }).start();
+            mWalkieViewModel.updateDog(mDog);
         }
+    }
+
+    void removeOwner(long ownerId, CardView cardView) {
+        mWalkieViewModel.removeOwnerFromDog(mDog.getDogId(), ownerId);
+        if(mDog.getOwnerId1() == ownerId) {
+            mDog.setOwnerId1(0);
+        } else if (mDog.getOwnerId2() == ownerId) {
+            mDog.setOwnerId2(0);
+        }
+        mWalkieViewModel.updateDog(mDog);
+        showAddOwnerUI(cardView);
     }
 
 }

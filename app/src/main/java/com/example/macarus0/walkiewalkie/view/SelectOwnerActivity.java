@@ -39,7 +39,7 @@ public class SelectOwnerActivity extends AppCompatActivity implements OwnerListA
         ownerListAdapter.setOwnerClickHandler(this::ownerClick);
         ownerListAdapter.setShowDogs(false);
         mItemsRecyclerView.setAdapter(ownerListAdapter);
-        mViewModel.getAllOwners().observe(this, owners -> ownerListAdapter.setOwners(owners));
+        mViewModel.getAllAvailableOwners().observe(this, owners -> ownerListAdapter.setOwners(owners));
     }
 
     @Override

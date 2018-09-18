@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class Owner {
 
     @PrimaryKey(autoGenerate = true)
-    int ownerId;
+    long ownerId;
     long dogId1;
     long dogId2;
     String photo;
@@ -19,12 +19,12 @@ public class Owner {
     String address;
 
     @Ignore
-    public int getOwnerId() {
+    public long getOwnerId() {
         return ownerId;
     }
 
     @Ignore
-    public void setOwnerId(int ownerId) {
+    public void setOwnerId(long ownerId) {
         this.ownerId = ownerId;
     }
 
