@@ -3,12 +3,10 @@ package com.example.macarus0.walkiewalkie.view;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;

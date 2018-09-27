@@ -11,9 +11,11 @@ import android.util.Log;
 import com.example.macarus0.walkiewalkie.data.Dog;
 import com.example.macarus0.walkiewalkie.data.Owner;
 import com.example.macarus0.walkiewalkie.data.Walk;
+import com.example.macarus0.walkiewalkie.data.WalkWithDogs;
 import com.example.macarus0.walkiewalkie.data.WalkieDatabase;
 import com.example.macarus0.walkiewalkie.data.WalkieDatabaseProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WalkieViewModel extends AndroidViewModel {
@@ -35,11 +37,8 @@ public class WalkieViewModel extends AndroidViewModel {
         return mDb;
     }
 
+    // Methods used in overall views
     public LiveData<List<Dog>> getAllDogs() {
-        return getDb().getDogDao().getAllDogs();
-    }
-
-    public LiveData<List<Dog>> getAllAvailableDogs() {
         return getDb().getDogDao().getAllDogs();
     }
 
@@ -47,22 +46,18 @@ public class WalkieViewModel extends AndroidViewModel {
         return getDb().getOwnerDao().getAllOwners();
     }
 
-    public LiveData<List<Owner>> getAllAvailableOwners() {
-        return getDb().getOwnerDao().getAvailableOwners();
-    }
-
     public LiveData<List<Walk>> getAllWalks() {
         return getDb().getWalkDao().getAllWalks();
     }
 
-    public LiveData<Dog> getDogById(long id) {
-        return getDb().getDogDao().getDogById(id);
+    // Methods used in Owner Views
+
+    public LiveData<List<Dog>> getAllAvailableDogs() {
+        return getDb().getDogDao().getAllDogs();
     }
 
-    public void updateDog(Dog dog) {
-        new Thread(() ->
-                getDb().getDogDao().updateDog(dog)
-        ).start();
+    public LiveData<List<Owner>> getAllAvailableOwners() {
+        return getDb().getOwnerDao().getAvailableOwners();
     }
 
     public void addDogToOwner(long dogId, long ownerId) {
@@ -88,6 +83,37 @@ public class WalkieViewModel extends AndroidViewModel {
             }
             getDb().getOwnerDao().updateOwner(owner);
         }).start();
+    }
+
+    public LiveData<Dog> getDogById(long id) {
+        return getDb().getDogDao().getDogById(id);
+    }
+
+    public void updateOwner(Owner owner) {
+        new Thread(() ->
+                getDb().getOwnerDao().updateOwner(owner)
+        ).start();
+    }
+
+    public LiveData<Long> insertOwner(Owner owner) {
+        MutableLiveData<Long> rowId = new MutableLiveData<>();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                long[] rowIds = getDb().getOwnerDao().insertOwner(owner);
+                rowId.postValue(rowIds[0]);
+            }
+        };
+        new Thread(r).start();
+        return rowId;
+    }
+
+    // Methods used in Dog Views
+
+    public void updateDog(Dog dog) {
+        new Thread(() ->
+                getDb().getDogDao().updateDog(dog)
+        ).start();
     }
 
     public void addOwnerToDog(long ownerId, long dogId) {
@@ -135,23 +161,38 @@ public class WalkieViewModel extends AndroidViewModel {
         return getDb().getOwnerDao().getOwnerById(id);
     }
 
-    public void updateOwner(Owner owner) {
-        new Thread(() ->
-                getDb().getOwnerDao().updateOwner(owner)
-        ).start();
-    }
+    // Methods used in Walk Views
+    public LiveData<Long> insertWalkAndDogs(Walk walk, List<Dog> dogs) {
 
-    public LiveData<Long> insertOwner(Owner owner) {
         MutableLiveData<Long> rowId = new MutableLiveData<>();
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                long[] rowIds = getDb().getOwnerDao().insertOwner(owner);
-                rowId.postValue(rowIds[0]);
+                long[] rowIds = getDb().getWalkDao().insertWalk(walk);
+                long walkId = rowIds[0];
+                List<WalkWithDogs> walkWithDogsList = new ArrayList<>();
+                for(Dog dog : dogs) {
+                    WalkWithDogs walkWithDogs = new WalkWithDogs();
+                    walkWithDogs.setDogId(dog.getDogId());
+                    walkWithDogs.setWalkId(walkId);
+                    walkWithDogsList.add(walkWithDogs);
+                }
+                getDb().getWalkWithDogsDao().insert(walkWithDogsList);
+                rowId.postValue(walkId);
             }
         };
         new Thread(r).start();
         return rowId;
+    }
+
+    public LiveData<Walk> getWalkById(long walkId) {
+        MutableLiveData<Walk> liveDataWalk = new MutableLiveData<>();
+        new Thread(() -> {
+            Walk walk = getDb().getWalkDao().getWalkById(walkId);
+            walk.setDogs(getDb().getWalkWithDogsDao().getDogsOnWalk(walkId));
+            liveDataWalk.postValue(walk);
+        }).start();
+        return liveDataWalk;
     }
 
 }

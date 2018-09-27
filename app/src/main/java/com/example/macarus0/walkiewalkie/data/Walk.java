@@ -1,23 +1,43 @@
 package com.example.macarus0.walkiewalkie.data;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Relation;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
 import java.util.List;
 
-@Dao
+@Entity
 public class Walk {
 
-    @Embedded
-    BaseWalk baseWalk;
+    @PrimaryKey(autoGenerate = true)
+    long walkId;
 
-    @Relation(parentColumn = "walkId",
-    entityColumn = "dogId")
-    public List<Dog> dogs;
+    @Ignore
+    public String getWalkDate() {
+        return walkDate;
+    }
 
-    @Relation(parentColumn = "walkId",
-    entityColumn = "photoId")
-    public List<WalkPhoto> photos;
+    @Ignore
+    public void setWalkDate(String walkDate) {
+        this.walkDate = walkDate;
+    }
+
+    String walkDate;
+    int walkDistance;
+    long walkDuration;
+    int walkDogsCount;
+
+    @Ignore
+    public List<Dog> getDogs() {
+        return dogs;
+    }
+
+    @Ignore
+    public void setDogs(List<Dog> dogs) {
+        this.dogs = dogs;
+    }
+
+    @Ignore
+    List<Dog> dogs;
 
 }

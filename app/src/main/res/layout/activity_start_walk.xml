@@ -14,45 +14,64 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_grid_margin">
+                android:orientation="horizontal"
+                android:padding="4dp">
 
-                <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/walk_photo_timer_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/walk_photo_timer_label"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="4dp">
+                    android:textSize="@dimen/list_item_text_size"
+                    tools:text="Photo reminder" />
 
-                    <android.support.v7.widget.AppCompatCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:checked="true" />
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/walk_photo_timer_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/walk_reminder_durations">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        tools:text="Photo reminder time" />
+                </android.support.v7.widget.AppCompatSpinner>
+            </android.support.v7.widget.LinearLayoutCompat>
 
-                    <android.support.v7.widget.AppCompatSpinner
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:entries="@array/walk_reminder_durations">
 
-                    </android.support.v7.widget.AppCompatSpinner>
-                </android.support.v7.widget.LinearLayoutCompat>
-            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/walk_track_distance_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/walk_track_distance_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/list_item_text_size"
+                    tools:text="Track walk distance" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
 
             <android.support.v7.widget.RecyclerView
-                android:layout_width="wrap_content"
+                android:id="@+id/walk_start_dog_card_recycler_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:itemCount="13"
                 tools:layoutManager="android.support.v7.widget.GridLayoutManager"
                 tools:listitem="@layout/contact_card"
-                tools:spanCount="3"
-               >
+                tools:spanCount="3">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -60,6 +79,7 @@
     </ScrollView>
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/start_walk_start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

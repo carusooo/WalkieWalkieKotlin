@@ -102,11 +102,17 @@
 
         <include
             android:id="@+id/dog1_card"
-            layout="@layout/contact_card" />
+            layout="@layout/contact_card"
+            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_margin="@dimen/card_grid_margin"/>
 
         <include
             android:id="@+id/dog2_card"
-            layout="@layout/contact_card" />
+            layout="@layout/contact_card"
+            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_margin="@dimen/card_grid_margin"/>
 
 
     </android.support.v7.widget.LinearLayoutCompat>

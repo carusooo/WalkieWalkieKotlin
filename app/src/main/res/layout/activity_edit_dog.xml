@@ -48,10 +48,16 @@
 
         <include
             android:id="@+id/owner1_card"
+            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_margin="@dimen/card_grid_margin"
             layout="@layout/contact_card" />
 
         <include
             android:id="@+id/owner2_card"
+            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_margin="@dimen/card_grid_margin"
             layout="@layout/contact_card" />
 
 

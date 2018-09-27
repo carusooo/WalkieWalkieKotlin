@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,12 +19,17 @@ import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements DogListAdapter.DogClickHandler, OwnerListAdapter.OwnerClickHandler {
+public class MainActivity extends AppCompatActivity implements
+        DogListAdapter.DogClickHandler,
+        OwnerListAdapter.OwnerClickHandler,
+        WalkListAdapter.WalkClickHandler{
 
     @BindView(R.id.items_list)
     RecyclerView mItemsRecyclerView;
     @BindView(R.id.add_item_button)
     AppCompatButton mAddItemButton;
+    @BindView(R.id.main_start_walk_fab)
+    FloatingActionButton mStartWalkFab;
     WalkieViewModel mViewModel;
     private MenuItem mSelectedBottomItemId;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -47,9 +53,11 @@ public class MainActivity extends AppCompatActivity implements DogListAdapter.Do
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         selectBottomItem(R.id.navigation_dogs);
 
+        mStartWalkFab.setOnClickListener(view -> startWalk());
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mItemsRecyclerView.setLayoutManager(linearLayoutManager);
+
 
     }
 
@@ -81,12 +89,14 @@ public class MainActivity extends AppCompatActivity implements DogListAdapter.Do
                 showOwner(OwnerContactActivity.ADD_OWNER);
             }
         });
-
     }
 
     private void showWalksList() {
         mAddItemButton.setVisibility(View.GONE);
-
+        WalkListAdapter walkListAdapter = new WalkListAdapter();
+        walkListAdapter.setWalkClickHandler(this::showWalk);
+        mItemsRecyclerView.setAdapter(walkListAdapter);
+        mViewModel.getAllWalks().observe(this, walks -> walkListAdapter.setWalks(walks));
     }
 
     private void showDog(long id) {
@@ -99,6 +109,10 @@ public class MainActivity extends AppCompatActivity implements DogListAdapter.Do
         Intent intent = new Intent(this, OwnerContactActivity.class);
         intent.putExtra(OwnerContactActivity.OWNER_ID, id);
         startActivity(intent);
+    }
+
+    private void showWalk(long id) {
+
     }
 
     private boolean selectBottomItem(int itemId) {
@@ -124,5 +138,13 @@ public class MainActivity extends AppCompatActivity implements DogListAdapter.Do
     @Override
     public void ownerClick(long id) {
         showOwner(id);
+    }
+
+    @Override
+    public void walkClick(long id ){ showWalk(id);}
+
+    private void startWalk() {
+        Intent intent = new Intent(this, StartWalkActivity.class);
+        startActivity(intent);
     }
 }

@@ -46,9 +46,17 @@
                 </android.support.v7.widget.LinearLayoutCompat>
             </android.support.v7.widget.CardView>
 
-            <include layout="@layout/card_walk_photos" />
+            <include
+                android:id="@+id/walk_photos"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                layout="@layout/card_walk_photos" />
 
-            <include layout="@layout/card_walk_dogs_list" />
+            <include
+                android:id="@+id/walk_dogs"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                layout="@layout/card_walk_dogs_list" />
         </LinearLayout>
     </ScrollView>
 
