@@ -66,19 +66,9 @@ public class DogContactActivity extends AppCompatActivity {
 
         dogImageView = dogPhoto.findViewById(R.id.photo_image);
         editDogPhotoButton = dogPhoto.findViewById(R.id.edit_photo_button);
-        editDogPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
+        editDogPhotoButton.setOnClickListener(v -> selectImage());
         saveButton.setText(R.string.save_contact_edits);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveFieldChanges();
-            }
-        });
+        saveButton.setOnClickListener(v -> saveFieldChanges());
 
         Intent intent = getIntent();
         mDogId = intent.getLongExtra(DOG_ID, ADD_DOG);
@@ -86,21 +76,11 @@ public class DogContactActivity extends AppCompatActivity {
             showAddDogUI();
             mDog = new Dog();
         } else {
-            mWalkieViewModel.getDogById(mDogId).observe(this, dog -> showDogUI(dog));
+            mWalkieViewModel.getDogById(mDogId).observe(this, this::showDogUI);
         }
 
-        owner1CardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectOwner(SELECT_OWNER1);
-            }
-        });
-        owner2CardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectOwner(SELECT_OWNER2);
-            }
-        });
+        owner1CardView.setOnClickListener(v -> selectOwner(SELECT_OWNER1));
+        owner2CardView.setOnClickListener(v -> selectOwner(SELECT_OWNER2));
 
     }
 
@@ -116,13 +96,13 @@ public class DogContactActivity extends AppCompatActivity {
         mDog = dog;
         Log.i(TAG, "showDogUI: " + dog.getOwnerId1());
         if (dog.getOwnerId1() != 0) {
-            mWalkieViewModel.getOwnerById(dog.getOwnerId1()).observe(this, owner -> showOwner1UI(owner));
+            mWalkieViewModel.getOwnerById(dog.getOwnerId1()).observe(this, this::showOwner1UI);
         } else {
             showAddOwner1UI();
         }
 
         if (dog.getOwnerId2() != 0) {
-            mWalkieViewModel.getOwnerById(dog.getOwnerId2()).observe(this, owner -> showOwner2UI(owner));
+            mWalkieViewModel.getOwnerById(dog.getOwnerId2()).observe(this, this::showOwner2UI);
         } else {
             showAddOwner2UI();
         }
@@ -145,12 +125,7 @@ public class DogContactActivity extends AppCompatActivity {
         TextView ownerNameTextView = cardView.findViewById(R.id.contact_name);
         ImageButton ownerRemoveButton = cardView.findViewById(R.id.contact_remove);
         ownerRemoveButton.setVisibility(View.VISIBLE);
-        ownerRemoveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeOwner(owner.getOwnerId(), cardView);
-            }
-        });
+        ownerRemoveButton.setOnClickListener(v -> removeOwner(owner.getOwnerId(), cardView));
         Picasso.get().load(owner.getPhoto()).placeholder(R.drawable.ic_default_owner_24dp).into(ownerImageView);
         ownerNameTextView.setText(owner.getFirstName());
     }
@@ -182,22 +157,28 @@ public class DogContactActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
-                Uri selectedImageUri = data.getData();
-                Picasso.get().load(selectedImageUri).into(dogImageView);
-                mDog.setPhoto(selectedImageUri.toString());
-            } else if (requestCode == SELECT_OWNER1) {
-                long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, 0);
-                mDog.setOwnerId1(ownerId);
-                mWalkieViewModel.getOwnerById(ownerId).observe(this, owner -> showOwner1UI(owner));
-                mWalkieViewModel.addDogToOwner(mDog.getDogId(), ownerId);
-                mWalkieViewModel.updateDog(mDog);
-            } else if (requestCode == SELECT_OWNER2) {
-                long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, 0);
-                mDog.setOwnerId2(ownerId);
-                mWalkieViewModel.getOwnerById(ownerId).observe(this, owner -> showOwner2UI(owner));
-                mWalkieViewModel.addDogToOwner(mDog.getDogId(), ownerId);
-                mWalkieViewModel.updateDog(mDog);
+            switch (requestCode) {
+                case SELECT_PICTURE:
+                    Uri selectedImageUri = data.getData();
+                    Picasso.get().load(selectedImageUri).into(dogImageView);
+                    mDog.setPhoto(selectedImageUri.toString());
+                    break;
+                case SELECT_OWNER1: {
+                    long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, 0);
+                    mDog.setOwnerId1(ownerId);
+                    mWalkieViewModel.getOwnerById(ownerId).observe(this, this::showOwner1UI);
+                    mWalkieViewModel.addDogToOwner(mDog.getDogId(), ownerId);
+                    mWalkieViewModel.updateDog(mDog);
+                    break;
+                }
+                case SELECT_OWNER2: {
+                    long ownerId = data.getLongExtra(SelectOwnerActivity.OWNER_ID, 0);
+                    mDog.setOwnerId2(ownerId);
+                    mWalkieViewModel.getOwnerById(ownerId).observe(this, this::showOwner2UI);
+                    mWalkieViewModel.addDogToOwner(mDog.getDogId(), ownerId);
+                    mWalkieViewModel.updateDog(mDog);
+                    break;
+                }
             }
         }
     }
@@ -212,7 +193,7 @@ public class DogContactActivity extends AppCompatActivity {
         mDog.setName(dogName.getText().toString());
         mDog.setAddress(dogAddress.getText().toString());
         if (mDogId == -1) {
-            mWalkieViewModel.insertDog(mDog).observe(this, id -> setDogId(id));
+            mWalkieViewModel.insertDog(mDog).observe(this, this::setDogId);
         } else {
             mWalkieViewModel.updateDog(mDog);
         }

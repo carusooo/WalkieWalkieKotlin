@@ -9,12 +9,14 @@ import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.data.Dog;
 import com.example.macarus0.walkiewalkie.data.Walk;
+import com.example.macarus0.walkiewalkie.util.PhotoReminderAlarm;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 
 import java.text.SimpleDateFormat;
@@ -28,27 +30,21 @@ import butterknife.ButterKnife;
 public class StartWalkActivity extends AppCompatActivity implements CheckedPhotoListAdapter.DogCheckHandler {
 
     private final String TAG = "StartWalkActivity";
-
-    private SimpleDateFormat sdf;
-
-
     @BindView(R.id.walk_photo_timer_checkbox)
     AppCompatCheckBox mPhotoTimerCheckBox;
     @BindView(R.id.walk_photo_timer_label)
     TextView mPhotoTimerLabel;
     @BindView(R.id.walk_photo_timer_picker)
     AppCompatSpinner mWalkPhotoTimerSpinner;
-
     @BindView(R.id.walk_track_distance_checkbox)
     AppCompatCheckBox mWalkTrackDistanceCheckbox;
     @BindView(R.id.walk_track_distance_label)
     TextView mWalkTrackDistanceLabel;
-
     @BindView(R.id.walk_start_dog_card_recycler_view)
     RecyclerView mDogCardRecyclerView;
-
     @BindView(R.id.start_walk_start_button)
     Button mStartWalkButton;
+    private SimpleDateFormat sdf;
     private Walk mWalk;
     private WalkieViewModel mWalkieViewModel;
     private HashSet<Dog> mCheckedDogs;
@@ -72,23 +68,33 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
         mPhotoTimerLabel.setText(R.string.photo_reminder_label);
         mWalkTrackDistanceLabel.setText(R.string.walk_track_distance_label);
 
+        ArrayList<String> timerValueArray = new ArrayList<String>();
+        for (int minutes : getResources().getIntArray(R.array.reminder_times_minutes)) {
+            timerValueArray.add(String.format("%d %s", minutes, getString(R.string.photo_reminder_minutes)));
+        }
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, timerValueArray);
+        mWalkPhotoTimerSpinner.setAdapter(spinnerArrayAdapter);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         mDogCardRecyclerView.setLayoutManager(gridLayoutManager);
         CheckedPhotoListAdapter checkedPhotoListAdapter = new CheckedPhotoListAdapter();
         checkedPhotoListAdapter.setDogCheckHandler(this::onDogCheckChanged);
         mDogCardRecyclerView.setAdapter(checkedPhotoListAdapter);
-        mWalkieViewModel.getAllDogs().observe(this, dogs -> checkedPhotoListAdapter.setDogs(dogs));
+        mWalkieViewModel.getAllDogs().observe(this, checkedPhotoListAdapter::setDogs);
     }
 
     private void startWalkPressed() {
-        Log.i(TAG, "startWalkPressed: "+ mCheckedDogs);
+        Log.i(TAG, "startWalkPressed: " + mCheckedDogs);
         mWalk.setWalkDate(sdf.format(new Date()));
         mWalkieViewModel.insertWalkAndDogs(mWalk, new ArrayList<>(mCheckedDogs))
-                .observe(this, id -> startWalk(id));
+                .observe(this, this::startWalk);
     }
 
     private void startWalk(long walkId) {
-        // TODO: Set up walk reminder
+        int pickerPosition = mWalkPhotoTimerSpinner.getSelectedItemPosition();
+        int reminderMinutes = getResources().getIntArray(R.array.reminder_times_minutes)[pickerPosition];
+        PhotoReminderAlarm.setAlarm(this, walkId, reminderMinutes*60);
         // TODO: Send track distance preference to the next activity
         Intent intent = new Intent(this, WalkStatusActivity.class);
         intent.putExtra(WalkStatusActivity.WALK_ID, walkId);
@@ -97,7 +103,7 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
 
     @Override
     public void onDogCheckChanged(Dog dog, boolean isChecked) {
-        if(isChecked) {
+        if (isChecked) {
             mCheckedDogs.add(dog);
         } else {
             mCheckedDogs.remove(dog);

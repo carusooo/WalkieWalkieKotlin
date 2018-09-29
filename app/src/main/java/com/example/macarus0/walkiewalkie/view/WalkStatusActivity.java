@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.data.Walk;
+import com.example.macarus0.walkiewalkie.util.PhotoReminderAlarm;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 
 import butterknife.BindView;
@@ -77,7 +78,7 @@ public class WalkStatusActivity extends AppCompatActivity {
         dogPhotoListAdapter.setSupportChecks(false);
         mDogRecyclerView.setAdapter(dogPhotoListAdapter);
 
-        mWalkieViewModel.getWalkById(mWalkId).observe(this, walk -> showWalkUI(walk));
+        mWalkieViewModel.getWalkById(mWalkId).observe(this, this::showWalkUI);
 
     }
 
@@ -94,6 +95,7 @@ public class WalkStatusActivity extends AppCompatActivity {
     private void endWalk() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PhotoReminderAlarm.cancelAlarm(this, mWalkId);
         startActivity(intent);
     }
 }

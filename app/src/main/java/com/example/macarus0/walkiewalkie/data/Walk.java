@@ -9,6 +9,16 @@ import java.util.List;
 @Entity
 public class Walk {
 
+    @Ignore
+    public long getWalkId() {
+        return walkId;
+    }
+
+    @Ignore
+    public void setWalkId(long walkId) {
+        this.walkId = walkId;
+    }
+
     @PrimaryKey(autoGenerate = true)
     long walkId;
 

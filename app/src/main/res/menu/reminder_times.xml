@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/reminder_5min" android:title="5 min">"5 min"</item>
-    <item android:id="@+id/reminder_10min" android:title="10 min">"10 min"</item>
-    <item android:id="@+id/reminder_15min" android:title="15 min">"15 min"</item>
-    <item android:id="@+id/reminder_20min" android:title="20 min">"20 min"</item>
-    <item android:id="@+id/reminder_30min" android:title="30 min">"30 min"</item>
-</menu>

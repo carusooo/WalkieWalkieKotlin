@@ -39,7 +39,10 @@
         <activity android:name=".view.SelectOwnerActivity" />
         <activity android:name=".view.SelectDogActivity" />
         <activity android:name=".view.StartWalkActivity" />
-        <activity android:name=".view.WalkStatusActivity"></activity>
+        <activity
+            android:name=".view.WalkStatusActivity"
+            android:launchMode="singleTop" />
+        <receiver android:name=".util.PhotoReminderAlarm" android:exported="true"/>
     </application>
 
 </manifest>

@@ -37,7 +37,7 @@ public class SelectDogActivity extends AppCompatActivity implements DogListAdapt
         dogListAdapter.setDogClickHandler(this::dogClick);
         dogListAdapter.setShowOwners(false);
         mItemsRecyclerView.setAdapter(dogListAdapter);
-        mViewModel.getAllAvailableDogs().observe(this, dogs -> dogListAdapter.setDogs(dogs));
+        mViewModel.getAllAvailableDogs().observe(this, dogListAdapter::setDogs);
     }
 
     @Override

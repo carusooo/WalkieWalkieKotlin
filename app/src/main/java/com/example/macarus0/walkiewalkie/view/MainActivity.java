@@ -33,14 +33,7 @@ public class MainActivity extends AppCompatActivity implements
     WalkieViewModel mViewModel;
     private MenuItem mSelectedBottomItemId;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            return selectBottomItem(item.getItemId());
-        }
-
-    };
+            = item -> selectBottomItem(item.getItemId());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +60,8 @@ public class MainActivity extends AppCompatActivity implements
         DogListAdapter dogListAdapter = new DogListAdapter();
         dogListAdapter.setDogClickHandler(this::dogClick);
         mItemsRecyclerView.setAdapter(dogListAdapter);
-        mViewModel.getAllDogs().observe(this, dogs -> dogListAdapter.setDogs(dogs));
-        mAddItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDog(DogContactActivity.ADD_DOG);
-            }
-        });
+        mViewModel.getAllDogs().observe(this, dogListAdapter::setDogs);
+        mAddItemButton.setOnClickListener(v -> showDog(DogContactActivity.ADD_DOG));
     }
 
     private void showOwnersList() {
@@ -82,13 +70,8 @@ public class MainActivity extends AppCompatActivity implements
         OwnerListAdapter ownerListAdapter = new OwnerListAdapter();
         ownerListAdapter.setOwnerClickHandler(this::ownerClick);
         mItemsRecyclerView.setAdapter(ownerListAdapter);
-        mViewModel.getAllOwners().observe(this, owners -> ownerListAdapter.setOwners(owners));
-        mAddItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showOwner(OwnerContactActivity.ADD_OWNER);
-            }
-        });
+        mViewModel.getAllOwners().observe(this, ownerListAdapter::setOwners);
+        mAddItemButton.setOnClickListener(v -> showOwner(OwnerContactActivity.ADD_OWNER));
     }
 
     private void showWalksList() {
@@ -96,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements
         WalkListAdapter walkListAdapter = new WalkListAdapter();
         walkListAdapter.setWalkClickHandler(this::showWalk);
         mItemsRecyclerView.setAdapter(walkListAdapter);
-        mViewModel.getAllWalks().observe(this, walks -> walkListAdapter.setWalks(walks));
+        mViewModel.getAllWalks().observe(this, walkListAdapter::setWalks);
     }
 
     private void showDog(long id) {
