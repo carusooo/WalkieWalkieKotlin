@@ -23,20 +23,39 @@
 
         <TextView
             android:id="@+id/walk_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:layout_marginStart="@dimen/card_two_line_image_vertical_margin"
-            android:layout_marginEnd="@dimen/card_two_line_image_vertical_margin"
-            android:layout_marginTop="4dp"
-            android:maxLines="2"
+            android:layout_marginStart="@dimen/card_text_to_image_margin"
+            android:layout_marginEnd="@dimen/card_text_to_text_margin"
+            android:layout_marginTop="16dp"
             android:textSize="@dimen/card_two_line_title_text_size"
+            android:gravity="start"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/walk_duration"
+            app:layout_constraintEnd_toStartOf="@id/walk_dog_count_label"
+            app:layout_constraintStart_toEndOf="@id/walk_thumb"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/walk_dog_count_text"
+            tools:text="31 Aug 2018" />
+
+        <TextView
+            android:id="@+id/walk_duration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="@dimen/card_text_to_image_margin"
+            android:layout_marginEnd="@dimen/card_text_to_text_margin"
+            android:layout_marginTop="4dp"
+            android:textSize="@dimen/card_two_line_title_text_size"
+            android:textAlignment="viewStart"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/walk_dog_count_label"
             app:layout_constraintStart_toEndOf="@id/walk_thumb"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="31 Aug 2018" />
+            app:layout_constraintTop_toBottomOf="@id/walk_date"
+            app:layout_constraintBaseline_toBaselineOf="@id/walk_dog_count_label"
+            tools:text="0:37" />
 
         <TextView
             android:id="@+id/walk_distance_text"

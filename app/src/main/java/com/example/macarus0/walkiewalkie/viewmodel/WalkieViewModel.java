@@ -186,4 +186,9 @@ public class WalkieViewModel extends AndroidViewModel {
         return liveDataWalk;
     }
 
+    public void updateWalk(Walk walk) {
+        new Thread(() ->
+                getDb().getWalkDao().updateWalk(walk)
+        ).start();
+    }
 }

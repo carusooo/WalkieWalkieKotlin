@@ -9,10 +9,11 @@
     <dimen name="card_two_line_title_text_size">16sp</dimen>
     <dimen name="card_two_line_subtitle_text_size">14sp</dimen>
     <dimen name="card_two_line_subimage_height">24dp</dimen>
+    <dimen name="card_text_to_image_margin">16dp</dimen>
+    <dimen name="card_text_to_text_margin">4dp</dimen>
     <dimen name="card_grid_margin">8dp</dimen>
     <dimen name="list_item_text_size">16sp</dimen>
-    <dimen name="start_walk_dog_grid_columns">3</dimen>
-    <dimen name="walk_status_dog_grid_columns">3</dimen>
+
 
     <!--
 Refer to App Widget Documentation for margin information

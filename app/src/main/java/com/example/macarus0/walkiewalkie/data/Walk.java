@@ -9,6 +9,23 @@ import java.util.List;
 @Entity
 public class Walk {
 
+    @PrimaryKey(autoGenerate = true)
+    long walkId;
+    String walkDate;
+    int walkDistance;
+    long walkDuration;
+    int walkDogsCount;
+    @Ignore
+    List<Dog> dogs;
+
+    public long getWalkDuration() {
+        return walkDuration;
+    }
+
+    public void setWalkDuration(long walkDuration) {
+        this.walkDuration = walkDuration;
+    }
+
     @Ignore
     public long getWalkId() {
         return walkId;
@@ -18,9 +35,6 @@ public class Walk {
     public void setWalkId(long walkId) {
         this.walkId = walkId;
     }
-
-    @PrimaryKey(autoGenerate = true)
-    long walkId;
 
     @Ignore
     public String getWalkDate() {
@@ -32,10 +46,13 @@ public class Walk {
         this.walkDate = walkDate;
     }
 
-    String walkDate;
-    int walkDistance;
-    long walkDuration;
-    int walkDogsCount;
+    public int getWalkDogsCount() {
+        return walkDogsCount;
+    }
+
+    public void setWalkDogsCount(int walkDogsCount) {
+        this.walkDogsCount = walkDogsCount;
+    }
 
     @Ignore
     public List<Dog> getDogs() {
@@ -46,8 +63,5 @@ public class Walk {
     public void setDogs(List<Dog> dogs) {
         this.dogs = dogs;
     }
-
-    @Ignore
-    List<Dog> dogs;
 
 }

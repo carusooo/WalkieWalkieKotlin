@@ -17,6 +17,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getDurationString;
+import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getStringDate;
+
 public class WalkListAdapter extends RecyclerView.Adapter<WalkListAdapter.ViewHolder> {
 
     private List<Walk> mWalks;
@@ -45,7 +48,10 @@ public class WalkListAdapter extends RecyclerView.Adapter<WalkListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull WalkListAdapter.ViewHolder holder, int position) {
         Walk walk = this.mWalks.get(position);
-        holder.walkDate.setText(walk.getWalkDate());
+        holder.walkDate.setText(getStringDate(walk.getWalkDate()));
+        holder.walkDogCountText.setText(Integer.toString(walk.getWalkDogsCount()));
+        holder.walkDogCountLabel.setText(R.string.walk_card_dogs_count);
+        holder.walkDuration.setText(getDurationString(walk.getWalkDuration()));
     }
 
     @Override
@@ -62,6 +68,8 @@ public class WalkListAdapter extends RecyclerView.Adapter<WalkListAdapter.ViewHo
         ImageView walkThumb;
         @BindView(R.id.walk_date)
         TextView walkDate;
+        @BindView(R.id.walk_duration)
+        TextView walkDuration;
         @BindView(R.id.walk_distance_text)
         TextView walkDistanceText;
         @BindView(R.id.walk_distance_label)

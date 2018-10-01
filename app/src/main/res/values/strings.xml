@@ -17,6 +17,8 @@
     <string name="select_owner_photo_activity_title">Select an owner photo</string>
     <string name="save_contact_edits">SAVE</string>
     <string name="title_activity_owner_contact">OwnerContactActivity</string>
+
+    <!--Walk Strings-->
     <string name="start_walk">Start Walk</string>
     <string name="photo_reminder_label">Photo reminder</string>
     <string name="photo_reminder_minutes">min</string>
@@ -25,6 +27,7 @@
     <string name="walk_distance_label">Distance walked:</string>
     <string name="walk_take_photo">Take photo</string>
     <string name="walk_photos_title">Photos from this walk</string>
+    <string name="walk_card_dogs_count">Dogs</string>
 
     <!--Notification Strings-->
     <string name="walk_photo_reminder">Take some photos on your walk!</string>

@@ -27,6 +27,8 @@ import java.util.HashSet;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getStringTimestamp;
+
 public class StartWalkActivity extends AppCompatActivity implements CheckedPhotoListAdapter.DogCheckHandler {
 
     private final String TAG = "StartWalkActivity";
@@ -54,9 +56,6 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_walk);
         ButterKnife.bind(this);
-
-        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",
-                getResources().getConfiguration().locale);
 
         mWalkieViewModel = ViewModelProviders.of(this).get(WalkieViewModel.class);
         mWalk = new Walk();
@@ -86,7 +85,8 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
 
     private void startWalkPressed() {
         Log.i(TAG, "startWalkPressed: " + mCheckedDogs);
-        mWalk.setWalkDate(sdf.format(new Date()));
+        mWalk.setWalkDate(getStringTimestamp());
+        mWalk.setWalkDogsCount(mCheckedDogs.size());
         mWalkieViewModel.insertWalkAndDogs(mWalk, new ArrayList<>(mCheckedDogs))
                 .observe(this, this::startWalk);
     }

@@ -19,6 +19,8 @@ import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.calculateDuration;
+
 public class WalkStatusActivity extends AppCompatActivity {
 
     public static final String WALK_ID = "walk_id";
@@ -71,8 +73,8 @@ public class WalkStatusActivity extends AppCompatActivity {
         takePhotoButton.setText(getString(R.string.walk_take_photo));
         takePhotoButton.setOnClickListener(view -> takePhoto());
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-                //(int)getResources().getDimension(R.dimen.walk_status_dog_grid_columns));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,
+                getResources().getInteger(R.integer.walk_status_dog_grid_columns));
         mDogRecyclerView.setLayoutManager(gridLayoutManager);
         dogPhotoListAdapter = new CheckedPhotoListAdapter();
         dogPhotoListAdapter.setSupportChecks(false);
@@ -96,6 +98,8 @@ public class WalkStatusActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PhotoReminderAlarm.cancelAlarm(this, mWalkId);
+        mWalk.setWalkDuration(calculateDuration(mWalk.getWalkDate()));
+        mWalkieViewModel.updateWalk(mWalk);
         startActivity(intent);
     }
 }
