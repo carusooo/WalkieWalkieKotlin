@@ -29,12 +29,17 @@
     <string name="walk_photos_title">Photos from this walk</string>
     <string name="walk_dogs_title">Dogs on this walk</string>
     <string name="walk_card_dogs_count">Dogs</string>
+    <string name="walk_share_summary">Send summary</string>
+    <string name="walk_skip_summary">Skip</string>
+
+    <!--Time Strings-->
+    <string name="seconds_format">"%02ds"</string>
+    <string name="minutes_format">"%02dm "</string>
+    <string name="hours_format">"%dh"</string>
 
     <!--Notification Strings-->
     <string name="walk_photo_reminder">Take some photos on your walk!</string>
     <string name="photo_reminder_notification_channel_name">Photo reminders</string>
     <string name="photo_reminder_notification_channel_desc">Reminds you to take photos on a walk</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

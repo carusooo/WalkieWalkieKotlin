@@ -28,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getStringTimestamp;
+import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getTime;
 
 public class StartWalkActivity extends AppCompatActivity implements CheckedPhotoListAdapter.DogCheckHandler {
 
@@ -86,6 +87,7 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
     private void startWalkPressed() {
         Log.i(TAG, "startWalkPressed: " + mCheckedDogs);
         mWalk.setWalkDate(getStringTimestamp());
+        mWalk.setWalkStartTime(getTime());
         mWalk.setWalkDogsCount(mCheckedDogs.size());
         mWalkieViewModel.insertWalkAndDogs(mWalk, new ArrayList<>(mCheckedDogs))
                 .observe(this, this::startWalk);
@@ -95,6 +97,7 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
         int pickerPosition = mWalkPhotoTimerSpinner.getSelectedItemPosition();
         int reminderMinutes = getResources().getIntArray(R.array.reminder_times_minutes)[pickerPosition];
         PhotoReminderAlarm.setAlarm(this, walkId, reminderMinutes*60);
+
         // TODO: Send track distance preference to the next activity
         Intent intent = new Intent(this, WalkStatusActivity.class);
         intent.putExtra(WalkStatusActivity.WALK_ID, walkId);

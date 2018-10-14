@@ -13,16 +13,34 @@ public class Walk {
     long walkId;
     String walkDate;
     int walkDistance;
-    long walkDuration;
+    String walkDuration;
+    long walkStartTime;
+    long walkEndTime;
     int walkDogsCount;
     @Ignore
     List<Dog> dogs;
 
-    public long getWalkDuration() {
+    public long getWalkStartTime() {
+        return walkStartTime;
+    }
+
+    public void setWalkStartTime(long walkStartTime) {
+        this.walkStartTime = walkStartTime;
+    }
+
+    public long getWalkEndTime() {
+        return walkEndTime;
+    }
+
+    public void setWalkEndTime(long walkEndTime) {
+        this.walkEndTime = walkEndTime;
+    }
+
+    public String getWalkDuration() {
         return walkDuration;
     }
 
-    public void setWalkDuration(long walkDuration) {
+    public void setWalkDuration(String walkDuration) {
         this.walkDuration = walkDuration;
     }
 

@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,22 +12,17 @@ import android.widget.TextView;
 
 import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.data.Walk;
-import com.example.macarus0.walkiewalkie.util.PhotoReminderAlarm;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.calculateDuration;
-import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getDurationString;
-import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getTime;
-
-public class WalkStatusActivity extends AppCompatActivity {
+public class WalkSummaryActivity extends AppCompatActivity {
 
     public static final String WALK_ID = "walk_id";
-    public static final String WALK_TRACK_DISTANCE = "walk_track_distance";
+    public static final String WALK_JUST_FINISHED = "walk_just_finished";
 
-    private static final String TAG = "WalkStatusActivity";
+    private static final String TAG = "WalkSummaryActivity";
 
     @BindView(R.id.walk_distance_label)
     TextView mWalkDistanceLabel;
@@ -39,7 +31,7 @@ public class WalkStatusActivity extends AppCompatActivity {
 
 
     @BindView(R.id.walk_end_walk_button)
-    Button mEndWalkButton;
+    Button mShareWalkButton;
     @BindView(R.id.walk_skip_summary_button)
     Button mSkipSharingButton;
 
@@ -58,12 +50,18 @@ public class WalkStatusActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mWalkId = intent.getLongExtra(WALK_ID, -1);
+        boolean walkJustFinished = intent.getBooleanExtra(WALK_JUST_FINISHED, true);
 
         mWalkieViewModel = ViewModelProviders.of(this).get(WalkieViewModel.class);
 
-        mEndWalkButton.setText(getString(R.string.end_walk));
-        mEndWalkButton.setOnClickListener(view -> endWalk());
-        mSkipSharingButton.setVisibility(View.GONE);
+        mShareWalkButton.setText(getString(R.string.walk_share_summary));
+        mShareWalkButton.setOnClickListener(view -> shareWalk());
+        if(walkJustFinished){
+            mSkipSharingButton.setText(getString(R.string.walk_skip_summary));
+            mSkipSharingButton.setOnClickListener(view -> skipSharing());
+        } else {
+            mSkipSharingButton.setVisibility(View.GONE);
+        }
 
         mWalkDistanceLabel.setText(getString(R.string.walk_distance_label));
 
@@ -72,7 +70,7 @@ public class WalkStatusActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (mWalkPhotosFragment == null) {
-            mWalkPhotosFragment = WalkPhotosFragment.newInstance(true);
+            mWalkPhotosFragment = WalkPhotosFragment.newInstance(false);
         }
         mWalkPhotosFragment.setWalkId(mWalkId);
         fragmentManager.beginTransaction()
@@ -92,16 +90,14 @@ public class WalkStatusActivity extends AppCompatActivity {
         Log.i(TAG, "showWalkUI: " + walk.getDogs());
     }
 
+    private void shareWalk() {
+        skipSharing();;
+    }
 
-    private void endWalk() {
-        Intent intent = new Intent(this, WalkSummaryActivity.class);
-        intent.putExtra(WalkSummaryActivity.WALK_ID, mWalkId);
-        intent.putExtra(WalkSummaryActivity.WALK_JUST_FINISHED, true);
-        PhotoReminderAlarm.cancelAlarm(this, mWalkId);
-        mWalk.setWalkEndTime(getTime());
-        mWalk.setWalkDuration(
-                getDurationString(this, mWalk.getWalkEndTime()-mWalk.getWalkStartTime()));
-        mWalkieViewModel.updateWalk(mWalk);
+    private void skipSharing() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
 }

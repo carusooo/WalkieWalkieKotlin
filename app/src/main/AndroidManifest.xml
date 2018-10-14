@@ -42,7 +42,12 @@
         <activity
             android:name=".view.WalkStatusActivity"
             android:launchMode="singleTop" />
-        <receiver android:name=".util.PhotoReminderAlarm" android:exported="true"/>
+
+        <receiver
+            android:name=".util.PhotoReminderAlarm"
+            android:exported="true" />
+
+        <activity android:name=".view.WalkSummaryActivity"></activity>
     </application>
 
 </manifest>

@@ -51,7 +51,8 @@ public class WalkListAdapter extends RecyclerView.Adapter<WalkListAdapter.ViewHo
         holder.walkDate.setText(getStringDate(walk.getWalkDate()));
         holder.walkDogCountText.setText(Integer.toString(walk.getWalkDogsCount()));
         holder.walkDogCountLabel.setText(R.string.walk_card_dogs_count);
-        holder.walkDuration.setText(getDurationString(walk.getWalkDuration()));
+        holder.walkDuration.setText(walk.getWalkDuration());
+        holder.walkId = walk.getWalkId();
     }
 
     @Override
@@ -64,6 +65,7 @@ public class WalkListAdapter extends RecyclerView.Adapter<WalkListAdapter.ViewHo
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        long walkId;
         @BindView(R.id.walk_thumb)
         ImageView walkThumb;
         @BindView(R.id.walk_date)
@@ -88,7 +90,7 @@ public class WalkListAdapter extends RecyclerView.Adapter<WalkListAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-
+            walkClickHandler.walkClick(this.walkId);
         }
     }
         interface WalkClickHandler {

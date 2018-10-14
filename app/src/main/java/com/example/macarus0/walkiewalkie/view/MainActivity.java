@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements
         DogListAdapter.DogClickHandler,
         OwnerListAdapter.OwnerClickHandler,
         WalkListAdapter.WalkClickHandler{
+
+    String TAG = "MainActivity";
 
     @BindView(R.id.items_list)
     RecyclerView mItemsRecyclerView;
@@ -95,7 +98,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void showWalk(long id) {
-
+        Intent intent = new Intent(this, WalkSummaryActivity.class);
+        intent.putExtra(WalkSummaryActivity.WALK_ID, id);
+        startActivity(intent);
     }
 
     private boolean selectBottomItem(int itemId) {
@@ -124,7 +129,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void walkClick(long id ){ showWalk(id);}
+    public void walkClick(long id ){
+        Log.i(TAG, "walkClick: Walk CLicked!");
+        showWalk(id);}
 
     private void startWalk() {
         Intent intent = new Intent(this, StartWalkActivity.class);

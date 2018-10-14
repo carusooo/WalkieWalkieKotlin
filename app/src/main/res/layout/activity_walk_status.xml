@@ -59,13 +59,27 @@
     </ScrollView>
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/walk_end_walk_button"
-        android:layout_width="match_parent"
+        android:id="@+id/walk_skip_summary_button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:layout_margin="@dimen/button_to_button_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/walk_scroll_view"
-        tools:text="End Walk" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/walk_end_walk_button"
+        tools:text="Skip" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/walk_end_walk_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:layout_margin="@dimen/button_to_button_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/walk_scroll_view"
+        app:layout_constraintStart_toEndOf="@id/walk_skip_summary_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Send Summary" />
 
 
 </android.support.constraint.ConstraintLayout>
