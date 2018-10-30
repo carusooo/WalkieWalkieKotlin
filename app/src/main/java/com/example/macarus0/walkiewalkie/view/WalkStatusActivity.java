@@ -42,17 +42,17 @@ public class WalkStatusActivity extends AppCompatActivity {
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private static final long UPDATE_INTERVAL = 60000; // Every 60 seconds.
+    private static final long UPDATE_INTERVAL = 30000; // Every 30 seconds.
     /**
      * The fastest rate for active location updates. Updates will never be more frequent
      * than this value, but they may be less frequent.
      */
-    private static final long FASTEST_UPDATE_INTERVAL = 30000; // Every 30 seconds
+    private static final long FASTEST_UPDATE_INTERVAL = 10000; // Every 10 seconds
     /**
      * The max time before batched results are delivered by location services. Results may be
      * delivered sooner than this interval.
      */
-    private static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 2; // Every 2 minutes.
+    private static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 2; // Every 1 minute.
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
@@ -138,20 +138,16 @@ public class WalkStatusActivity extends AppCompatActivity {
         // requested if other applications are requesting location at a faster interval.
         // Note: apps running on "O" devices (regardless of targetSdkVersion) may receive updates
         // less frequently than this interval when the app is no longer in the foreground.
-        //mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setInterval(1000);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
 
         // Sets the fastest rate for active location updates. This interval is exact, and your
         // application will never receive updates faster than this value.
-        //mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(1000);
-
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         // Sets the maximum time when batched location updates are delivered. Updates may be
         // delivered sooner than this interval.
-        //mLocationRequest.setMaxWaitTime(MAX_WAIT_TIME);
-        mLocationRequest.setMaxWaitTime(5000);
+        mLocationRequest.setMaxWaitTime(MAX_WAIT_TIME);
 
         locationUtil = new LocationUtil(this, mWalkId);
 
