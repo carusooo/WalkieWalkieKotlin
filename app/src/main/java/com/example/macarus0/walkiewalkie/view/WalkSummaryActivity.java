@@ -2,6 +2,7 @@ package com.example.macarus0.walkiewalkie.view;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.data.Walk;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,8 +69,8 @@ public class WalkSummaryActivity extends AppCompatActivity {
 
         mWalkDistanceLabel.setText(getString(R.string.walk_distance_label));
 
-
         mWalkieViewModel.getWalkById(mWalkId).observe(this, this::showWalkUI);
+        mWalkieViewModel.getPath(mWalkId).observe(this, this::showPathUI);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (mWalkPhotosFragment == null) {
@@ -88,10 +92,18 @@ public class WalkSummaryActivity extends AppCompatActivity {
     private void showWalkUI(Walk walk) {
         mWalk = walk;
         Log.i(TAG, "showWalkUI: " + walk.getDogs());
+        mWalkDistanceText.setText(String.format("%.1f", mWalk.getWalkDistance()));
+    }
+
+    private void showPathUI(List<Location> pathPoints) {
+        Log.i(TAG, "showPathUI: Showing Path");
+        for(Location latLng: pathPoints) {
+            Log.i(TAG, "showPathUI: "+latLng.toString());
+        }
     }
 
     private void shareWalk() {
-        skipSharing();;
+        skipSharing();
     }
 
     private void skipSharing() {

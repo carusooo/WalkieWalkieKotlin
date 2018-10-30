@@ -49,6 +49,8 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
     Button mStartWalkButton;
     private SimpleDateFormat sdf;
     private Walk mWalk;
+    private boolean mTrackDistance;
+    private boolean mPhotoReminder;
     private WalkieViewModel mWalkieViewModel;
     private HashSet<Dog> mCheckedDogs;
 
@@ -66,7 +68,12 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
         mStartWalkButton.setOnClickListener(view -> startWalkPressed());
 
         mPhotoTimerLabel.setText(R.string.photo_reminder_label);
+        mPhotoReminder = true;
+        mPhotoTimerCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> mPhotoReminder = isChecked);
         mWalkTrackDistanceLabel.setText(R.string.walk_track_distance_label);
+        mTrackDistance = true;
+        mWalkTrackDistanceCheckbox.setOnCheckedChangeListener((buttonView, isChecked) ->
+                mTrackDistance = isChecked);
 
         ArrayList<String> timerValueArray = new ArrayList<String>();
         for (int minutes : getResources().getIntArray(R.array.reminder_times_minutes)) {
@@ -96,11 +103,13 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
     private void startWalk(long walkId) {
         int pickerPosition = mWalkPhotoTimerSpinner.getSelectedItemPosition();
         int reminderMinutes = getResources().getIntArray(R.array.reminder_times_minutes)[pickerPosition];
-        PhotoReminderAlarm.setAlarm(this, walkId, reminderMinutes*60);
+        if(mPhotoReminder) {
+            PhotoReminderAlarm.setAlarm(this, walkId, reminderMinutes * 60);
+        }
 
-        // TODO: Send track distance preference to the next activity
         Intent intent = new Intent(this, WalkStatusActivity.class);
         intent.putExtra(WalkStatusActivity.WALK_ID, walkId);
+        intent.putExtra(WalkStatusActivity.WALK_TRACK_DISTANCE, mTrackDistance);
         startActivity(intent);
     }
 

@@ -12,13 +12,21 @@ public class Walk {
     @PrimaryKey(autoGenerate = true)
     long walkId;
     String walkDate;
-    int walkDistance;
+    float walkDistance;
     String walkDuration;
     long walkStartTime;
     long walkEndTime;
     int walkDogsCount;
     @Ignore
     List<Dog> dogs;
+
+    public float getWalkDistance() {
+        return walkDistance;
+    }
+
+    public void setWalkDistance(float walkDistance) {
+        this.walkDistance = walkDistance;
+    }
 
     public long getWalkStartTime() {
         return walkStartTime;

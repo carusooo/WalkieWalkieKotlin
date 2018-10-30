@@ -5,15 +5,18 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.macarus0.walkiewalkie.data.Dog;
 import com.example.macarus0.walkiewalkie.data.Owner;
 import com.example.macarus0.walkiewalkie.data.Walk;
+import com.example.macarus0.walkiewalkie.data.WalkLocation;
 import com.example.macarus0.walkiewalkie.data.WalkWithDogs;
 import com.example.macarus0.walkiewalkie.data.WalkieDatabase;
 import com.example.macarus0.walkiewalkie.data.WalkieDatabaseProvider;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -190,5 +193,26 @@ public class WalkieViewModel extends AndroidViewModel {
         new Thread(() ->
                 getDb().getWalkDao().updateWalk(walk)
         ).start();
+    }
+
+    public LiveData<List<WalkLocation>> getLocations(long walkId) {
+        return getDb().getWalkLocationDao().getLiveWalkLocations(walkId);
+    }
+
+    public LiveData<List<Location>> getPath(long walkId) {
+        MutableLiveData<List<Location>> walkPath = new MutableLiveData<>();
+        new Thread(() -> {
+            List<WalkLocation> walkLocations = getDb().getWalkLocationDao().getWalkLocations(walkId);
+            ArrayList<Location> locations = new ArrayList<>();
+            for(WalkLocation walkLocation : walkLocations) {
+                Location location = new Location("");
+                location.setLongitude(walkLocation.getLongitude());
+                location.setLatitude(walkLocation.getLatitude());
+                location.setTime(walkLocation.getTimestamp());
+                locations.add(location);
+            }
+            walkPath.postValue(locations);
+        }).start();
+        return walkPath;
     }
 }

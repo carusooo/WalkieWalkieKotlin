@@ -17,6 +17,7 @@
     <string name="select_owner_photo_activity_title">Select an owner photo</string>
     <string name="save_contact_edits">SAVE</string>
     <string name="title_activity_owner_contact">OwnerContactActivity</string>
+    <string name="ok">OK</string>
 
     <!--Walk Strings-->
     <string name="start_walk">Start Walk</string>
@@ -31,6 +32,8 @@
     <string name="walk_card_dogs_count">Dogs</string>
     <string name="walk_share_summary">Send summary</string>
     <string name="walk_skip_summary">Skip</string>
+    <string name="location_request_rationale">Location permission is needed to track the distance and location of your walks</string>
+    <string name="location_denied">You have disabled location tracking, no distance or location will be recorded</string>
 
     <!--Time Strings-->
     <string name="seconds_format">"%02ds"</string>
