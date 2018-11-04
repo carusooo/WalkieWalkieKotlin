@@ -57,6 +57,11 @@
             android:exported="true" />
 
         <activity android:name=".view.WalkSummaryActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAalNWRPNCOrokAA48IR-blbRHwRS2txbA"/>
+
     </application>
 
 </manifest>

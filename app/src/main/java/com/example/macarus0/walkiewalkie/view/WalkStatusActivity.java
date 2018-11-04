@@ -4,6 +4,7 @@ import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,6 +26,13 @@ import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
 
@@ -33,12 +42,13 @@ import butterknife.ButterKnife;
 import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getDurationString;
 import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getTime;
 
-public class WalkStatusActivity extends AppCompatActivity {
+public class WalkStatusActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     public static final String WALK_ID = "walk_id";
     public static final String WALK_TRACK_DISTANCE = "walk_track_distance";
 
     private static final String TAG = "WalkStatusActivity";
+    private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
@@ -65,10 +75,15 @@ public class WalkStatusActivity extends AppCompatActivity {
     Button mEndWalkButton;
     @BindView(R.id.walk_skip_summary_button)
     Button mSkipSharingButton;
+    @BindView(R.id.walk_map)
+    MapView mWalkMap;
     private long mWalkId;
     private boolean mTrackDistance;
     private LocationRequest mLocationRequest;
     private Walk mWalk;
+    private List<WalkLocation> mWalkPath;
+    private Location lastLocation;
+    private GoogleMap mGoogleMap;
     private WalkieViewModel mWalkieViewModel;
     private WalkPhotosFragment mWalkPhotosFragment;
     private WalkDogsFragment mWalkDogsFragment;
@@ -81,11 +96,15 @@ public class WalkStatusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_walk_status);
         ButterKnife.bind(this);
 
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
+        }
+
         Intent intent = getIntent();
         mWalkId = intent.getLongExtra(WALK_ID, -1);
         mTrackDistance = intent.getBooleanExtra(WALK_TRACK_DISTANCE, false);
         Log.i(TAG, "onCreate: mTrack " + mTrackDistance);
-
 
         mWalkieViewModel = ViewModelProviders.of(this).get(WalkieViewModel.class);
 
@@ -93,9 +112,10 @@ public class WalkStatusActivity extends AppCompatActivity {
         mEndWalkButton.setOnClickListener(view -> endWalk());
         mSkipSharingButton.setVisibility(View.GONE);
 
-        mWalkDistanceLabel.setText(getString(R.string.walk_distance_label));
-
         if (mTrackDistance) {
+            mWalkDistanceLabel.setText(getString(R.string.walk_distance_label));
+            mWalkMap.onCreate(mapViewBundle);
+            mWalkMap.getMapAsync(this::onMapReady);
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             startLocationTracking();
         }
@@ -117,6 +137,24 @@ public class WalkStatusActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.walk_dogs, mWalkDogsFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onStart() {
+        mWalkMap.onStart();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mWalkMap.onStop();
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mWalkMap.onDestroy();
+        super.onDestroy();
     }
 
     private void showWalkUI(Walk walk) {
@@ -154,6 +192,16 @@ public class WalkStatusActivity extends AppCompatActivity {
         try {
             Log.i(TAG, "Starting location tracking "+ mWalkId);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, locationUtil, null);
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                setMapLocation(location);
+                            }
+                        }
+                    });
         } catch (SecurityException e) {
             e.printStackTrace();
         }
@@ -239,10 +287,21 @@ public class WalkStatusActivity extends AppCompatActivity {
     private void walkLocationUpdated(List<WalkLocation> locations) {
         if(locations.size() == 0) return;
         float walkDistance = LocationUtil.getDistance(locations);
+        mWalkPath = locations;
         mWalk.setWalkDistance(walkDistance);
         mWalkDistanceText.setText(String.format("%.1f", mWalk.getWalkDistance()));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(LocationUtil.getBounds(locations), 0));
+        LocationUtil.addPathToMap(mGoogleMap, mWalkPath);
     }
 
+    private void setMapLocation(Location location) {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(latLng)
+                .zoom(17)
+                .build();
+        mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
 
     private void endWalk() {
         Intent intent = new Intent(this, WalkSummaryActivity.class);
@@ -255,5 +314,15 @@ public class WalkStatusActivity extends AppCompatActivity {
                 getDurationString(this, mWalk.getWalkEndTime() - mWalk.getWalkStartTime()));
         mWalkieViewModel.updateWalk(mWalk);
         startActivity(intent);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        try {
+            mGoogleMap.setMyLocationEnabled(true);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
     }
 }

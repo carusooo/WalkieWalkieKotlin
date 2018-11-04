@@ -96,6 +96,7 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
         mWalk.setWalkDate(getStringTimestamp());
         mWalk.setWalkStartTime(getTime());
         mWalk.setWalkDogsCount(mCheckedDogs.size());
+        mWalk.setDistanceTracked(mTrackDistance);
         mWalkieViewModel.insertWalkAndDogs(mWalk, new ArrayList<>(mCheckedDogs))
                 .observe(this, this::startWalk);
     }

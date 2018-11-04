@@ -13,7 +13,14 @@ import android.widget.TextView;
 
 import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.data.Walk;
+import com.example.macarus0.walkiewalkie.data.WalkLocation;
+import com.example.macarus0.walkiewalkie.util.LocationUtil;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -21,12 +28,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WalkSummaryActivity extends AppCompatActivity {
+public class WalkSummaryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     public static final String WALK_ID = "walk_id";
     public static final String WALK_JUST_FINISHED = "walk_just_finished";
 
     private static final String TAG = "WalkSummaryActivity";
+    private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
 
     @BindView(R.id.walk_distance_label)
     TextView mWalkDistanceLabel;
@@ -38,6 +46,9 @@ public class WalkSummaryActivity extends AppCompatActivity {
     Button mShareWalkButton;
     @BindView(R.id.walk_skip_summary_button)
     Button mSkipSharingButton;
+    @BindView(R.id.walk_map)
+    MapView mWalkMap;
+    private GoogleMap mGoogleMap;
 
     private long mWalkId;
     private Walk mWalk;
@@ -56,6 +67,12 @@ public class WalkSummaryActivity extends AppCompatActivity {
         mWalkId = intent.getLongExtra(WALK_ID, -1);
         boolean walkJustFinished = intent.getBooleanExtra(WALK_JUST_FINISHED, true);
 
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
+        }
+        mWalkDistanceLabel.setText(getString(R.string.walk_distance_label));
+
         mWalkieViewModel = ViewModelProviders.of(this).get(WalkieViewModel.class);
 
         mShareWalkButton.setText(getString(R.string.walk_share_summary));
@@ -66,11 +83,9 @@ public class WalkSummaryActivity extends AppCompatActivity {
         } else {
             mSkipSharingButton.setVisibility(View.GONE);
         }
-
-        mWalkDistanceLabel.setText(getString(R.string.walk_distance_label));
+        mWalkMap.onCreate(mapViewBundle);
 
         mWalkieViewModel.getWalkById(mWalkId).observe(this, this::showWalkUI);
-        mWalkieViewModel.getPath(mWalkId).observe(this, this::showPathUI);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (mWalkPhotosFragment == null) {
@@ -93,13 +108,34 @@ public class WalkSummaryActivity extends AppCompatActivity {
         mWalk = walk;
         Log.i(TAG, "showWalkUI: " + walk.getDogs());
         mWalkDistanceText.setText(String.format("%.1f", mWalk.getWalkDistance()));
+        if(mWalk.isDistanceTracked()) {
+            mWalkMap.getMapAsync(this::onMapReady);
+            mWalkieViewModel.getLocations(mWalkId).observe(this, this::showPathUI);
+        }
     }
 
-    private void showPathUI(List<Location> pathPoints) {
+    @Override
+    protected void onStart() {
+        mWalkMap.onStart();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mWalkMap.onStop();
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mWalkMap.onDestroy();
+        super.onDestroy();
+    }
+
+    private void showPathUI(List<WalkLocation> locations) {
         Log.i(TAG, "showPathUI: Showing Path");
-        for(Location latLng: pathPoints) {
-            Log.i(TAG, "showPathUI: "+latLng.toString());
-        }
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(LocationUtil.getBounds(locations), 0));
+        LocationUtil.addPathToMap(mGoogleMap, locations);
     }
 
     private void shareWalk() {
@@ -110,6 +146,11 @@ public class WalkSummaryActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
     }
 
 }

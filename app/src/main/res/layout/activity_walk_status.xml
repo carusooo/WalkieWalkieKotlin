@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_walk_status"
     android:layout_width="match_parent"
@@ -23,6 +24,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/card_grid_margin">
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                 <android.support.v7.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -44,6 +49,15 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/card_two_line_image_vertical_margin"
                         tools:text="1.0 mi" />
+
+                </android.support.v7.widget.LinearLayoutCompat>
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/walk_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    map:mapType="normal"
+                    >
+                </com.google.android.gms.maps.MapView>
                 </android.support.v7.widget.LinearLayoutCompat>
             </android.support.v7.widget.CardView>
 

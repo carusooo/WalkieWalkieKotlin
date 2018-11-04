@@ -17,6 +17,16 @@ public class Walk {
     long walkStartTime;
     long walkEndTime;
     int walkDogsCount;
+
+    public boolean isDistanceTracked() {
+        return distanceTracked;
+    }
+
+    public void setDistanceTracked(boolean distanceTracked) {
+        this.distanceTracked = distanceTracked;
+    }
+
+    boolean distanceTracked;
     @Ignore
     List<Dog> dogs;
 
