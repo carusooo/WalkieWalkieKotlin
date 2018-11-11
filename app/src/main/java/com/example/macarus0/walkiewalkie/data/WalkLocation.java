@@ -41,4 +41,9 @@ public class WalkLocation {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s,%s", getLatitude(),getLongitude());
+    }
 }

@@ -45,4 +45,11 @@
     <string name="photo_reminder_notification_channel_name">Photo reminders</string>
     <string name="photo_reminder_notification_channel_desc">Reminds you to take photos on a walk</string>
 
+    <!--Email Strings-->
+    <string name="email_subject">Our walk on </string>
+    <string name="email_text_duration_distance">We walked for %s covering %f.</string>
+    <string name="email_map_label">See our path here</string>
+    <string name="email_text_photos">Take a look at the attached photos to see how much fun we had.</string>
+    <string name="email_intent_title">Send walk summary email</string>
+
 </resources>

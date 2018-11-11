@@ -15,6 +15,7 @@ import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.data.Walk;
 import com.example.macarus0.walkiewalkie.data.WalkLocation;
 import com.example.macarus0.walkiewalkie.util.LocationUtil;
+import com.example.macarus0.walkiewalkie.util.WalkEmailUtil;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -52,6 +53,7 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
 
     private long mWalkId;
     private Walk mWalk;
+    private List<WalkLocation> mWalkLocations;
     private WalkieViewModel mWalkieViewModel;
     private WalkPhotosFragment mWalkPhotosFragment;
     private WalkDogsFragment mWalkDogsFragment;
@@ -134,12 +136,15 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
 
     private void showPathUI(List<WalkLocation> locations) {
         Log.i(TAG, "showPathUI: Showing Path");
+        mWalkLocations = locations;
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(LocationUtil.getBounds(locations), 0));
         LocationUtil.addPathToMap(mGoogleMap, locations);
     }
 
     private void shareWalk() {
-        skipSharing();
+        WalkEmailUtil emailUtil = new WalkEmailUtil(this, mWalk, mWalkLocations);
+        Intent intent = emailUtil.getEmailIntent();
+        startActivity(intent.createChooser(intent, getString(R.string.email_intent_title)));
     }
 
     private void skipSharing() {
