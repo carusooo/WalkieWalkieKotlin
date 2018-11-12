@@ -28,6 +28,7 @@ public class LocationUtil extends LocationCallback {
     private static final String TAG = "LocationUtil";
 
     private static final double MAP_BORDER = .00002d;
+    private static final double ACCURACY = 30d;
 
     public LocationUtil(Context context, long walkId) {
         mDb = WalkieDatabaseProvider.getDatabase(context);
@@ -40,11 +41,14 @@ public class LocationUtil extends LocationCallback {
             List<Location> locations = locationResult.getLocations();
             ArrayList<WalkLocation> walkLocations = new ArrayList<>();
             for(Location location : locations) {
+                // Ignore inaccurate location values
+                if(location.getAccuracy() > ACCURACY) continue;
                 WalkLocation walkLocation = new WalkLocation();
                 walkLocation.setWalkId(mWalkId);
                 walkLocation.setLatitude(location.getLatitude());
                 walkLocation.setLongitude(location.getLongitude());
                 walkLocation.setTimestamp(location.getTime());
+                walkLocation.setAccuracy(location.getAccuracy());
                 walkLocations.add(walkLocation);
             }
             Log.i(TAG, String.format("onLocationResult: Adding %d locations", walkLocations.size()));

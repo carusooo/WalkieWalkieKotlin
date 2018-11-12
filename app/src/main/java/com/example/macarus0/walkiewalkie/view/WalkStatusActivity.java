@@ -52,12 +52,12 @@ public class WalkStatusActivity extends AppCompatActivity implements OnMapReadyC
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private static final long UPDATE_INTERVAL = 30000; // Every 30 seconds.
+    private static final long UPDATE_INTERVAL = 5000; // Every 5 seconds.
     /**
      * The fastest rate for active location updates. Updates will never be more frequent
      * than this value, but they may be less frequent.
      */
-    private static final long FASTEST_UPDATE_INTERVAL = 10000; // Every 10 seconds
+    private static final long FASTEST_UPDATE_INTERVAL = 5000; // Every 5 seconds
     /**
      * The max time before batched results are delivered by location services. Results may be
      * delivered sooner than this interval.
@@ -97,15 +97,15 @@ public class WalkStatusActivity extends AppCompatActivity implements OnMapReadyC
         ButterKnife.bind(this);
 
         Bundle mapViewBundle = null;
+        Intent intent = getIntent();
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
+            mWalkId = savedInstanceState.getLong(WALK_ID);
+            mTrackDistance = savedInstanceState.getBoolean(WALK_TRACK_DISTANCE);
+        } else if (intent != null) {
+            mWalkId = intent.getLongExtra(WALK_ID, -1);
+            mTrackDistance = intent.getBooleanExtra(WALK_TRACK_DISTANCE, false);
         }
-
-        Intent intent = getIntent();
-        mWalkId = intent.getLongExtra(WALK_ID, -1);
-        mTrackDistance = intent.getBooleanExtra(WALK_TRACK_DISTANCE, false);
-        Log.i(TAG, "onCreate: mTrack " + mTrackDistance);
-
         mWalkieViewModel = ViewModelProviders.of(this).get(WalkieViewModel.class);
 
         mEndWalkButton.setText(getString(R.string.end_walk));
@@ -119,6 +119,7 @@ public class WalkStatusActivity extends AppCompatActivity implements OnMapReadyC
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             startLocationTracking();
         }
+        Log.e(TAG, "onCreate: mWalkId "+mWalkId);
 
         mWalkieViewModel.getWalkById(mWalkId).observe(this, this::showWalkUI);
 
@@ -140,9 +141,30 @@ public class WalkStatusActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.e(TAG, "onSaveInstanceState: mWalkId "+mWalkId);
+        outState.putLong(WALK_ID, mWalkId);
+        outState.putBoolean(WALK_TRACK_DISTANCE, mTrackDistance);
+    }
+
+    @Override
     protected void onStart() {
         mWalkMap.onStart();
         super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        mWalkMap.onPause();
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        mWalkMap.onResume();
+        super.onResume();
     }
 
     @Override

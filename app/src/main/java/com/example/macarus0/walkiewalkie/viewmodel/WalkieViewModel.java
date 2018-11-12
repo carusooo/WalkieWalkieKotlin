@@ -182,6 +182,7 @@ public class WalkieViewModel extends AndroidViewModel {
     public LiveData<Walk> getWalkById(long walkId) {
         MutableLiveData<Walk> liveDataWalk = new MutableLiveData<>();
         new Thread(() -> {
+            Log.e(TAG, "getWalkById: "+walkId );
             Walk walk = getDb().getWalkDao().getWalkById(walkId);
             walk.setDogs(getDb().getWalkWithDogsDao().getDogsOnWalk(walkId));
             liveDataWalk.postValue(walk);

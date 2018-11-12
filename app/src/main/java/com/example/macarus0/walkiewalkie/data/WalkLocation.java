@@ -14,6 +14,16 @@ public class WalkLocation {
     double longitude;
     long timestamp;
 
+    public double getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(double accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    double accuracy;
+
     public void setWalkId(long walkId) {
         this.walkId = walkId;
     }
