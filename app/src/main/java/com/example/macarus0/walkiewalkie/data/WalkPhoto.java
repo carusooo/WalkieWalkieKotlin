@@ -8,8 +8,23 @@ public class WalkPhoto {
     @PrimaryKey(autoGenerate = true)
     int photoId;
 
-    String photoPath;
+    public String getPhotoUri() {
+        return photoUri;
+    }
 
-    int walkId;
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
+    }
+
+    public long getWalkId() {
+        return walkId;
+    }
+
+    public void setWalkId(long walkId) {
+        this.walkId = walkId;
+    }
+
+    String photoUri;
+    long walkId;
 
 }

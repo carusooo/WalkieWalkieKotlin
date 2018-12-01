@@ -13,10 +13,10 @@ import com.example.macarus0.walkiewalkie.data.Dog;
 import com.example.macarus0.walkiewalkie.data.Owner;
 import com.example.macarus0.walkiewalkie.data.Walk;
 import com.example.macarus0.walkiewalkie.data.WalkLocation;
+import com.example.macarus0.walkiewalkie.data.WalkPhoto;
 import com.example.macarus0.walkiewalkie.data.WalkWithDogs;
 import com.example.macarus0.walkiewalkie.data.WalkieDatabase;
 import com.example.macarus0.walkiewalkie.data.WalkieDatabaseProvider;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,10 +57,6 @@ public class WalkieViewModel extends AndroidViewModel {
 
     public LiveData<List<Dog>> getAllAvailableDogs() {
         return getDb().getDogDao().getAllDogs();
-    }
-
-    public LiveData<List<Owner>> getAllAvailableOwners() {
-        return getDb().getOwnerDao().getAvailableOwners();
     }
 
     public void addDogToOwner(long dogId, long ownerId) {
@@ -110,6 +106,9 @@ public class WalkieViewModel extends AndroidViewModel {
 
     // Methods used in Dog Views
 
+    public LiveData<List<Owner>> getAllAvailableOwners() {
+        return getDb().getOwnerDao().getAvailableOwners();
+    }
     public void updateDog(Dog dog) {
         new Thread(() ->
                 getDb().getDogDao().updateDog(dog)
@@ -216,4 +215,19 @@ public class WalkieViewModel extends AndroidViewModel {
         }).start();
         return walkPath;
     }
+
+    public void addPhotoToWalk(WalkPhoto walkPhoto) {
+        new Thread(() ->
+                getDb().getWalkPhotoDao().addPhoto(walkPhoto)
+        ).start();
+    }
+
+    public LiveData<List<WalkPhoto>> getWalkPhotos(long walkId) {
+        return getDb().getWalkPhotoDao().getAllWalkPhotos(walkId);
+    }
+
+    public LiveData<List<Owner>> getDogOwnersOnWalk(long walkId) {
+        return getDb().getOwnerDao().getDogOwnersOnWalk(walkId);
+    }
+
 }

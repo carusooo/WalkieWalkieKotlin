@@ -2,6 +2,7 @@ package com.example.macarus0.walkiewalkie.data;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import java.util.List;
@@ -10,6 +11,9 @@ import java.util.List;
 public abstract class WalkPhotoDao {
 
     @Query("select * from walkphoto where walkId = :walkId")
-    public abstract LiveData<List<WalkPhoto>> getAllWalkPhotos(int walkId);
+    public abstract LiveData<List<WalkPhoto>> getAllWalkPhotos(long walkId);
+
+    @Insert
+    public abstract void addPhoto(WalkPhoto walkPhoto);
 
 }

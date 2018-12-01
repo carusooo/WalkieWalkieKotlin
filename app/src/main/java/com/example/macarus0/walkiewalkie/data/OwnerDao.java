@@ -27,6 +27,10 @@ public interface OwnerDao {
     @Query("Select * from owner where ownerId = :ownerId")
     Owner getOwnerByIdSync(long ownerId);
 
+    @Query("Select * from owner join dog on (dog.ownerId1 = ownerId OR dog.ownerId2 = ownerId) join walkwithdogs on walkwithdogs.dogId = " +
+            "dog.dogId where walkwithdogs.walkId = :walkId")
+    LiveData<List<Owner>> getDogOwnersOnWalk(long walkId);
+
     @Insert
     long[] insertOwner(Owner...owners);
 

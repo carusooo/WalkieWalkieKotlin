@@ -1,11 +1,23 @@
 package com.example.macarus0.walkiewalkie.view;
 
+import android.Manifest;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ContentProvider;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +25,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.macarus0.walkiewalkie.R;
+import com.example.macarus0.walkiewalkie.data.WalkPhoto;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,15 +50,29 @@ import butterknife.ButterKnife;
  */
 public class WalkPhotosFragment extends Fragment {
 
+    private static final String TAG = "WalkPhotosFragment";
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
     private static final String ALLOW_NEW_PHOTOS = "allow_new_photos";
     @BindView(R.id.walk_photos_title)
     TextView mWalkPhotosTitle;
     @BindView(R.id.walk_take_photo_button)
     Button mWalkTakePhotoButton;
+    @BindView(R.id.walk_photos_rv)
+    public RecyclerView mWalkRecyclerView;
+    private WalkPhotoListAdapter walkPhotoListAdapter;
     private boolean mAllowNewPhotos;
+    private Uri mLastPhotoUri;
+    private String mLastPhotoPath;
     private long mWalkId;
+
+    public List<WalkPhoto> getWalkPhotos() {
+        return mWalkPhotos;
+    }
+
+    private List<WalkPhoto> mWalkPhotos;
     private WalkieViewModel walkieViewModel;
-    private OnFragmentInteractionListener mListener;
 
     public WalkPhotosFragment() {
         // Required empty public constructor
@@ -84,6 +120,13 @@ public class WalkPhotosFragment extends Fragment {
         } else {
             mWalkTakePhotoButton.setVisibility(View.GONE);
         }
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),
+                3);
+        mWalkRecyclerView.setLayoutManager(gridLayoutManager);
+        walkPhotoListAdapter = new WalkPhotoListAdapter();
+        mWalkRecyclerView.setAdapter(walkPhotoListAdapter);
+        walkieViewModel.getWalkPhotos(mWalkId).observe(this, this::showPhotos);
         return view;
     }
 
@@ -96,13 +139,58 @@ public class WalkPhotosFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     private void takePhoto() {
-
-
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            // Error occurred while creating the File
+            Log.e(TAG, "takePhoto: Unable to create the file "+ex.getMessage());
+        }
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            mLastPhotoUri = FileProvider.getUriForFile(getContext(),
+                    "com.example.macarus0.walkiewalkie.fileprovider",
+                    photoFile);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mLastPhotoUri);
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Log.i(TAG, "onActivityResult: Photo was received");
+            WalkPhoto walkPhoto = new WalkPhoto();
+            walkPhoto.setPhotoUri(mLastPhotoUri.toString());
+            File photoFile = new File(mLastPhotoUri.toString());
+            walkPhoto.setWalkId(mWalkId);
+            walkieViewModel.addPhotoToWalk(walkPhoto);
+        }
+    }
+
+    public void showPhotos(List<WalkPhoto> walkPhotos) {
+        mWalkPhotos = walkPhotos;
+        walkPhotoListAdapter.setPhotos(walkPhotos);
+    }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + ".jpg";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        return image;
+    }
+
 
 
     /**

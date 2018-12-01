@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.macarus0.walkiewalkie.R;
+import com.example.macarus0.walkiewalkie.data.Owner;
 import com.example.macarus0.walkiewalkie.data.Walk;
 import com.example.macarus0.walkiewalkie.data.WalkLocation;
 import com.example.macarus0.walkiewalkie.util.LocationUtil;
@@ -57,6 +58,7 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
     private WalkieViewModel mWalkieViewModel;
     private WalkPhotosFragment mWalkPhotosFragment;
     private WalkDogsFragment mWalkDogsFragment;
+    private List<Owner> mWalkOwners;
 
 
     @Override
@@ -79,12 +81,14 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
 
         mShareWalkButton.setText(getString(R.string.walk_share_summary));
         mShareWalkButton.setOnClickListener(view -> shareWalk());
+        mShareWalkButton.setEnabled(false);
         if(walkJustFinished){
             mSkipSharingButton.setText(getString(R.string.walk_skip_summary));
             mSkipSharingButton.setOnClickListener(view -> skipSharing());
         } else {
             mSkipSharingButton.setVisibility(View.GONE);
         }
+        mWalkieViewModel.getDogOwnersOnWalk(mWalkId).observe(this, this::enableSharing);
         mWalkMap.onCreate(mapViewBundle);
 
         mWalkieViewModel.getWalkById(mWalkId).observe(this, this::showWalkUI);
@@ -141,10 +145,16 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
         LocationUtil.addPathToMap(mGoogleMap, locations);
     }
 
+    private void enableSharing(List<Owner> owners) {
+        mWalkOwners = owners;
+        mShareWalkButton.setEnabled(true);
+    }
+
     private void shareWalk() {
-        WalkEmailUtil emailUtil = new WalkEmailUtil(this, mWalk, mWalkLocations);
+        WalkEmailUtil emailUtil = new WalkEmailUtil(this, mWalk, mWalkLocations,
+                mWalkPhotosFragment.getWalkPhotos(), mWalkOwners);
         Intent intent = emailUtil.getEmailIntent();
-        startActivity(intent.createChooser(intent, getString(R.string.email_intent_title)));
+        startActivity(Intent.createChooser(intent, getString(R.string.email_intent_title)));
     }
 
     private void skipSharing() {

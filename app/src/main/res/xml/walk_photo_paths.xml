@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+<external-path name="walk_photos" path="Android/data/com.example.macarus0.walkiewalkie/files/Pictures" />
+</paths>

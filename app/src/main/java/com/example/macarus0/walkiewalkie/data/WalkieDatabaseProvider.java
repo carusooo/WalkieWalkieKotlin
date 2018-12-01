@@ -6,6 +6,8 @@ import android.content.Context;
 
 public class WalkieDatabaseProvider {
 
+    private static final String dbName = "WalkieDatabase";
+
     private static WalkieDatabase sDb;
 
     public static WalkieDatabase getDatabase(Context context) {
@@ -16,7 +18,7 @@ public class WalkieDatabaseProvider {
     }
 
     private static WalkieDatabase createDatabase(Context context) {
-        return Room.inMemoryDatabaseBuilder(context.getApplicationContext(), WalkieDatabase.class).build();
+        return Room.databaseBuilder(context.getApplicationContext(), WalkieDatabase.class, dbName).build();
     }
 
 }

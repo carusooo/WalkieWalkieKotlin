@@ -15,4 +15,6 @@ public abstract class WalkieDatabase extends RoomDatabase {
 
     public abstract WalkLocationDao getWalkLocationDao();
 
+    public abstract WalkPhotoDao getWalkPhotoDao();
+
 }
