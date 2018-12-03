@@ -6,6 +6,7 @@ import android.location.Location;
 import android.util.Log;
 import android.util.Pair;
 
+import com.example.macarus0.walkiewalkie.data.Walk;
 import com.example.macarus0.walkiewalkie.data.WalkLocation;
 import com.example.macarus0.walkiewalkie.data.WalkieDatabase;
 import com.example.macarus0.walkiewalkie.data.WalkieDatabaseProvider;
@@ -21,6 +22,9 @@ import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class LocationUtil extends LocationCallback {
     WalkieDatabase mDb;
@@ -29,6 +33,10 @@ public class LocationUtil extends LocationCallback {
 
     private static final double MAP_BORDER = .00002d;
     private static final double ACCURACY = 30d;
+
+    private static final String MAP_URL = "https://maps.googleapis.com/maps/api/staticmap?";
+    private static final String MAP_SIZE = "640x480";
+    private static final String MAP_KEY = "AIzaSyAalNWRPNCOrokAA48IR-blbRHwRS2txbA";
 
     public LocationUtil(Context context, long walkId) {
         mDb = WalkieDatabaseProvider.getDatabase(context);
@@ -54,6 +62,19 @@ public class LocationUtil extends LocationCallback {
             Log.i(TAG, String.format("onLocationResult: Adding %d locations", walkLocations.size()));
             new Thread(() -> mDb.getWalkLocationDao().addWalkLocations(walkLocations)).start();
         }
+    }
+
+    public static String generateMapsUrl(List<WalkLocation> locations) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(MAP_URL);
+        sb.append("path=");
+        String result = locations.stream().map(WalkLocation::toString)
+                .collect(Collectors.joining("|"));
+        sb.append(result);
+        sb.append(String.format("&size=%s", MAP_SIZE));
+        sb.append(String.format("&key=%s", MAP_KEY));
+        Log.i(TAG, "getMapURL: "+sb.toString());
+        return sb.toString();
     }
 
     public static float getDistance(List<WalkLocation> locations) {

@@ -13,14 +13,10 @@ import com.example.macarus0.walkiewalkie.data.WalkPhoto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static android.support.constraint.Constraints.TAG;
 
 public class WalkEmailUtil {
-
-    private final String MAP_URL = "https://maps.googleapis.com/maps/api/staticmap?";
-    private final String MAP_SIZE = "640x480";
 
     Walk mWalk;
     List<WalkLocation> mWalkLocations;
@@ -78,7 +74,7 @@ public class WalkEmailUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(mContext.getString(R.string.email_text_duration_distance),
                 mWalk.getWalkDuration(), this.getWalkDistance()));
-        sb.append(String.format("\n\n%s: %s", mContext.getString(R.string.email_map_label), getMapURL() ));
+        sb.append(String.format("\n\n%s: %s", mContext.getString(R.string.email_map_label), mWalk.getWalkPathUrl() ));
 
         return sb.toString();
     }
@@ -88,20 +84,7 @@ public class WalkEmailUtil {
         String distanceString = String.format(mContext.getString(R.string.email_text_duration_distance),
                 mWalk.getWalkDuration(), this.getWalkDistance());
         sb.append(String.format("<p>%s</p>", distanceString));
-        sb.append(String.format("<p><a href=\"%s\">%s.</a></p>", getMapURL(), mContext.getString(R.string.email_map_label)));
-        return sb.toString();
-    }
-
-    private String getMapURL() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(MAP_URL);
-        sb.append("path=");
-        String result = mWalkLocations.stream().map(WalkLocation::toString)
-                .collect(Collectors.joining("|"));
-        sb.append(result);
-        sb.append(String.format("&size=%s", MAP_SIZE));
-        sb.append(String.format("&key=%s", "AIzaSyAalNWRPNCOrokAA48IR-blbRHwRS2txbA"));
-        Log.i(TAG, "getMapURL: "+sb.toString());
+        sb.append(String.format("<p><a href=\"%s\">%s.</a></p>", mWalk.getWalkPathUrl(), mContext.getString(R.string.email_map_label)));
         return sb.toString();
     }
 

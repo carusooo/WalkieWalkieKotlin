@@ -2,7 +2,8 @@ package com.example.macarus0.walkiewalkie.view;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.location.Location;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,17 +19,22 @@ import com.example.macarus0.walkiewalkie.data.WalkLocation;
 import com.example.macarus0.walkiewalkie.util.LocationUtil;
 import com.example.macarus0.walkiewalkie.util.WalkEmailUtil;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.macarus0.walkiewalkie.util.LocationUtil.generateMapsUrl;
 
 public class WalkSummaryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -66,7 +72,6 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_status);
         ButterKnife.bind(this);
-
         Intent intent = getIntent();
         mWalkId = intent.getLongExtra(WALK_ID, -1);
         boolean walkJustFinished = intent.getBooleanExtra(WALK_JUST_FINISHED, true);
@@ -82,13 +87,16 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
         mShareWalkButton.setText(getString(R.string.walk_share_summary));
         mShareWalkButton.setOnClickListener(view -> shareWalk());
         mShareWalkButton.setEnabled(false);
-        if(walkJustFinished){
+        if (walkJustFinished) {
             mSkipSharingButton.setText(getString(R.string.walk_skip_summary));
             mSkipSharingButton.setOnClickListener(view -> skipSharing());
         } else {
             mSkipSharingButton.setVisibility(View.GONE);
         }
-        mWalkieViewModel.getDogOwnersOnWalk(mWalkId).observe(this, this::enableSharing);
+        mWalkieViewModel.getDogOwnersOnWalk(mWalkId).observe(this, owners -> {
+            mWalkOwners = owners;
+            enableSharing();
+        });
         mWalkMap.onCreate(mapViewBundle);
 
         mWalkieViewModel.getWalkById(mWalkId).observe(this, this::showWalkUI);
@@ -114,10 +122,32 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
         mWalk = walk;
         Log.i(TAG, "showWalkUI: " + walk.getDogs());
         mWalkDistanceText.setText(String.format("%.1f", mWalk.getWalkDistance()));
-        if(mWalk.isDistanceTracked()) {
+        if (mWalk.isDistanceTracked()) {
             mWalkMap.getMapAsync(this::onMapReady);
             mWalkieViewModel.getLocations(mWalkId).observe(this, this::showPathUI);
         }
+    }
+
+    private void createShortlink() {
+        String mapsUrl = generateMapsUrl(mWalkLocations);
+        Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(mapsUrl))
+                .setDomainUriPrefix("https://walkiewalkie.page.link")
+                .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
+                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortLink = task.getResult().getShortLink();
+                            mWalk.setWalkPathLink(shortLink.toString());
+                            enableSharing();
+                        } else {
+                            Log.e(TAG, "onComplete: Unable to create short Url: " + task.getException());
+                            mWalk.setWalkPathLink(mapsUrl);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -141,13 +171,17 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
     private void showPathUI(List<WalkLocation> locations) {
         Log.i(TAG, "showPathUI: Showing Path");
         mWalkLocations = locations;
+        if (mWalk.getWalkPathUrl() == null) {
+            createShortlink();
+        }
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(LocationUtil.getBounds(locations), 0));
         LocationUtil.addPathToMap(mGoogleMap, locations);
     }
 
-    private void enableSharing(List<Owner> owners) {
-        mWalkOwners = owners;
-        mShareWalkButton.setEnabled(true);
+    private void enableSharing() {
+        if (mWalkOwners != null && mWalk.getWalkPathUrl() != null) {
+            mShareWalkButton.setEnabled(true);
+        }
     }
 
     private void shareWalk() {

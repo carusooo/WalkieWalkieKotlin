@@ -14,9 +14,21 @@ public class Walk {
     String walkDate;
     float walkDistance;
     String walkDuration;
+    String walkPathLink;
     long walkStartTime;
     long walkEndTime;
     int walkDogsCount;
+    boolean distanceTracked;
+    @Ignore
+    List<Dog> dogs;
+
+    public String getWalkPathUrl() {
+        return walkPathLink;
+    }
+
+    public void setWalkPathLink(String walkPathLink) {
+        this.walkPathLink = walkPathLink;
+    }
 
     public boolean isDistanceTracked() {
         return distanceTracked;
@@ -25,10 +37,6 @@ public class Walk {
     public void setDistanceTracked(boolean distanceTracked) {
         this.distanceTracked = distanceTracked;
     }
-
-    boolean distanceTracked;
-    @Ignore
-    List<Dog> dogs;
 
     public float getWalkDistance() {
         return walkDistance;
