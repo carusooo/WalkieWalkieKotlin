@@ -1,8 +1,10 @@
 package com.example.macarus0.walkiewalkie.view;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -175,6 +177,11 @@ public class OwnerContactActivity extends AppCompatActivity {
             switch (requestCode) {
                 case SELECT_OWNER_PICTURE:
                     Uri selectedImageUri = data.getData();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        final int takeFlags = data.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                        ContentResolver resolver = getContentResolver();
+                        resolver.takePersistableUriPermission(selectedImageUri, takeFlags);
+                    }
                     Picasso.get().load(selectedImageUri).into(ownerImageView);
                     mOwner.setPhoto(selectedImageUri.toString());
                     break;

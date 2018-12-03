@@ -53,4 +53,8 @@
     <string name="email_text_photos">Take a look at the attached photos to see how much fun we had.</string>
     <string name="email_intent_title">Send walk summary email</string>
 
+    <!--Widget Strings-->
+    <string name="widget_no_walk">No walk in progress</string>
+    <string name="widget_walk_title">Dogs on Walk</string>
+
 </resources>

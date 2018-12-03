@@ -1,7 +1,9 @@
 package com.example.macarus0.walkiewalkie.view;
 
 import android.Manifest;
+import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -17,7 +19,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.macarus0.walkiewalkie.DogWidgetService;
 import com.example.macarus0.walkiewalkie.R;
+import com.example.macarus0.walkiewalkie.view.WalkieDogsWidget;
 import com.example.macarus0.walkiewalkie.data.Walk;
 import com.example.macarus0.walkiewalkie.data.WalkLocation;
 import com.example.macarus0.walkiewalkie.util.LocationUtil;
@@ -138,6 +142,8 @@ public class WalkStatusActivity extends AppCompatActivity implements OnMapReadyC
         fragmentManager.beginTransaction()
                 .replace(R.id.walk_dogs, mWalkDogsFragment)
                 .commit();
+
+        updateWalkWidget(mWalkId);
     }
 
     @Override
@@ -335,6 +341,7 @@ public class WalkStatusActivity extends AppCompatActivity implements OnMapReadyC
         mWalk.setWalkDuration(
                 getDurationString(this, mWalk.getWalkEndTime() - mWalk.getWalkStartTime()));
         mWalkieViewModel.updateWalk(mWalk);
+        updateWalkWidget(0);
         startActivity(intent);
     }
 
@@ -346,5 +353,21 @@ public class WalkStatusActivity extends AppCompatActivity implements OnMapReadyC
         } catch (SecurityException e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateWalkWidget(long walkId) {
+
+        Intent updateWidgetIntent = new Intent(this, WalkieDogsWidget.class);
+        updateWidgetIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        updateWidgetIntent.putExtra(DogWidgetService.WALK_ID, walkId);
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, WalkieDogsWidget.class));
+        if(appWidgetIds != null && appWidgetIds.length > 0) {
+            Log.i(TAG, "updateWalkWidget: Sending the intent to the widget");
+            updateWidgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+            this.sendBroadcast(updateWidgetIntent);
+        }
+
     }
 }

@@ -1,8 +1,10 @@
 package com.example.macarus0.walkiewalkie.view;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -148,10 +150,18 @@ public class DogContactActivity extends AppCompatActivity {
     }
 
     void selectImage() {
-        Intent intent = new Intent();
+        Intent intent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        } else {
+            intent = new Intent(Intent.ACTION_GET_CONTENT);
+        }
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_dog_photo_activity_title)), SELECT_PICTURE);
+        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_dog_photo_activity_title)), SELECT_PICTURE);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -160,6 +170,11 @@ public class DogContactActivity extends AppCompatActivity {
             switch (requestCode) {
                 case SELECT_PICTURE:
                     Uri selectedImageUri = data.getData();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        final int takeFlags = data.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                        ContentResolver resolver = getContentResolver();
+                        resolver.takePersistableUriPermission(selectedImageUri, takeFlags);
+                    }
                     Picasso.get().load(selectedImageUri).into(dogImageView);
                     mDog.setPhoto(selectedImageUri.toString());
                     break;
@@ -201,7 +216,7 @@ public class DogContactActivity extends AppCompatActivity {
 
     void removeOwner(long ownerId, CardView cardView) {
         mWalkieViewModel.removeOwnerFromDog(mDog.getDogId(), ownerId);
-        if(mDog.getOwnerId1() == ownerId) {
+        if (mDog.getOwnerId1() == ownerId) {
             mDog.setOwnerId1(0);
         } else if (mDog.getOwnerId2() == ownerId) {
             mDog.setOwnerId2(0);

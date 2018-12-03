@@ -9,12 +9,9 @@
     <meta-data
         android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
-
     <meta-data
         android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
-
-
 
     <application
         android:allowBackup="true"
@@ -34,16 +31,6 @@
         </activity>
         <activity android:name=".view.DogContactActivity" />
 
-        <receiver android:name=".WalkStatusWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/walk_status_widget_info" />
-        </receiver>
-
         <activity
             android:name=".view.OwnerContactActivity"
             android:label="@string/title_activity_owner_contact"
@@ -59,11 +46,11 @@
             android:name=".util.PhotoReminderAlarm"
             android:exported="true" />
 
-        <activity android:name=".view.WalkSummaryActivity"></activity>
+        <activity android:name=".view.WalkSummaryActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAalNWRPNCOrokAA48IR-blbRHwRS2txbA"/>
+            android:value="AIzaSyAalNWRPNCOrokAA48IR-blbRHwRS2txbA" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -72,9 +59,25 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/walk_photo_paths"></meta-data>
+                android:resource="@xml/walk_photo_paths" />
         </provider>
 
+        <receiver android:name=".view.WalkieDogsWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/walkie_dogs_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".DogWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
+
+        </service>
     </application>
 
 </manifest>

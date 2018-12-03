@@ -27,6 +27,9 @@ public interface DogDao {
     @Query("Select * from dog where dogId = :dogId")
     Dog getDogByIdSync(long dogId);
 
+    @Query("Select * from dog join walkwithdogs on dog.dogId = walkWithDogs.dogId where walkWithDogs.walkId = :walkId")
+    List<Dog> getDogsOnWalk(long walkId);
+
     @Insert
     long[] insertDog(Dog...dogs);
 

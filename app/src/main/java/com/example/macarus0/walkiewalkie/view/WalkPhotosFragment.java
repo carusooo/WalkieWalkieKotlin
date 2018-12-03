@@ -166,7 +166,6 @@ public class WalkPhotosFragment extends Fragment {
             Log.i(TAG, "onActivityResult: Photo was received");
             WalkPhoto walkPhoto = new WalkPhoto();
             walkPhoto.setPhotoUri(mLastPhotoUri.toString());
-            File photoFile = new File(mLastPhotoUri.toString());
             walkPhoto.setWalkId(mWalkId);
             walkieViewModel.addPhotoToWalk(walkPhoto);
         }

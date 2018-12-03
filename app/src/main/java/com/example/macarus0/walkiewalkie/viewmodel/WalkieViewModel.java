@@ -5,7 +5,6 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -199,22 +198,6 @@ public class WalkieViewModel extends AndroidViewModel {
         return getDb().getWalkLocationDao().getLiveWalkLocations(walkId);
     }
 
-    public LiveData<List<Location>> getPath(long walkId) {
-        MutableLiveData<List<Location>> walkPath = new MutableLiveData<>();
-        new Thread(() -> {
-            List<WalkLocation> walkLocations = getDb().getWalkLocationDao().getWalkLocations(walkId);
-            ArrayList<Location> locations = new ArrayList<>();
-            for(WalkLocation walkLocation : walkLocations) {
-                Location location = new Location("");
-                location.setLongitude(walkLocation.getLongitude());
-                location.setLatitude(walkLocation.getLatitude());
-                location.setTime(walkLocation.getTimestamp());
-                locations.add(location);
-            }
-            walkPath.postValue(locations);
-        }).start();
-        return walkPath;
-    }
 
     public void addPhotoToWalk(WalkPhoto walkPhoto) {
         new Thread(() ->
