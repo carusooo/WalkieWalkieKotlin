@@ -145,6 +145,7 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
                         } else {
                             Log.e(TAG, "onComplete: Unable to create short Url: " + task.getException());
                             mWalk.setWalkPathLink(mapsUrl);
+                            enableSharing();
                         }
                     }
                 });
