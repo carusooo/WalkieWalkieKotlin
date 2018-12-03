@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.data.Dog;
@@ -21,7 +22,6 @@ import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 
 import butterknife.BindView;
@@ -93,6 +93,10 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
 
     private void startWalkPressed() {
         Log.i(TAG, "startWalkPressed: " + mCheckedDogs);
+        if(mCheckedDogs.isEmpty()) {
+            Toast.makeText(this, R.string.walk_no_dogs_selected, Toast.LENGTH_SHORT).show();
+            return;
+        }
         mWalk.setWalkDate(getStringTimestamp());
         mWalk.setWalkStartTime(getTime());
         mWalk.setWalkDogsCount(mCheckedDogs.size());

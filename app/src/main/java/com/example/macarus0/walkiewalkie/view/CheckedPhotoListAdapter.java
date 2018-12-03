@@ -72,7 +72,7 @@ public class CheckedPhotoListAdapter extends RecyclerView.Adapter<CheckedPhotoLi
         void onDogCheckChanged(Dog dog, boolean isChecked);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.contact_image)
         ImageView dogImage;
@@ -86,14 +86,15 @@ public class CheckedPhotoListAdapter extends RecyclerView.Adapter<CheckedPhotoLi
             super(itemView);
             ButterKnife.bind(this, itemView);
             if (supportChecks) {
-                dogCheckBox.setOnCheckedChangeListener(this::onCheckedChanged);
                 dogCheckBox.setVisibility(View.VISIBLE);
+                itemView.setOnClickListener(this::onClick);
             }
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            mDogCheckHandler.onDogCheckChanged(dog, isChecked);
+        public void onClick(View view) {
+            mDogCheckHandler.onDogCheckChanged(dog, !dogCheckBox.isChecked());
+            dogCheckBox.setChecked(!dogCheckBox.isChecked());
         }
     }
 
