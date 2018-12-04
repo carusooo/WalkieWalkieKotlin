@@ -52,7 +52,9 @@ public class OwnerContactActivity extends AppCompatActivity {
     @BindView(R.id.dog2_card)
     CardView dog2CardView;
     @BindView(R.id.contact_save_button)
-    Button saveButton;
+    AppCompatImageButton saveButton;
+    @BindView(R.id.contact_cancel_button)
+    AppCompatImageButton cancelButton;
     AppCompatImageButton editOwnerPhotoButton;
 
     ImageView ownerImageView;
@@ -77,8 +79,8 @@ public class OwnerContactActivity extends AppCompatActivity {
         editOwnerPhotoButton = ownerPhoto.findViewById(R.id.edit_photo_button);
         editOwnerPhotoButton.setOnClickListener(v -> selectImage());
 
-        saveButton.setText(R.string.save_contact_edits);
         saveButton.setOnClickListener(v -> saveFieldChanges());
+        cancelButton.setOnClickListener(v -> close());
 
         Intent intent = getIntent();
         mOwnerId = intent.getLongExtra(OWNER_ID, ADD_OWNER);
@@ -224,6 +226,11 @@ public class OwnerContactActivity extends AppCompatActivity {
         } else {
             mWalkieViewModel.updateOwner(mOwner);
         }
+        close();
+    }
+
+    void close(){
+        finish();
     }
 
     void removeDog(long dogId, CardView cardView) {
