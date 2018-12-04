@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/card_list_margin"
+    >
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/card_two_line_card_height">
+
+        <ImageView
+            android:id="@+id/walk_thumb"
+            android:layout_width="@dimen/list_item_wide_image_width"
+            android:layout_height="@dimen/list_item_wide_image_height"
+            android:layout_marginTop="@dimen/list_item_wide_image_vert_margin"
+            android:layout_marginBottom="@dimen/list_item_wide_image_vert_margin"
+            android:src="@drawable/ic_walk_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/walk_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/card_text_to_image_margin"
+            android:layout_marginTop="@dimen/card_two_line_title_text_vert_margin"
+            android:layout_marginEnd="@dimen/card_text_to_text_margin"
+            android:layout_marginBottom="4dp"
+            android:gravity="start"
+            android:textSize="@dimen/card_two_line_title_text_size"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/walk_duration"
+            app:layout_constraintStart_toEndOf="@id/walk_thumb"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="31 Aug 2018" />
+
+        <TextView
+            android:id="@+id/walk_duration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/card_text_to_image_margin"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="@dimen/card_text_to_text_margin"
+            android:layout_marginBottom="4dp"
+            android:textAlignment="viewStart"
+            android:textSize="@dimen/card_two_line_subtitle_text_size"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/walk_distance_text"
+            app:layout_constraintStart_toEndOf="@id/walk_thumb"
+            app:layout_constraintTop_toBottomOf="@id/walk_date"
+            tools:text="0:37" />
+
+        <TextView
+            android:id="@+id/walk_distance_text"
+            android:layout_width="@dimen/card_two_line_subimage_height"
+            android:layout_height="@dimen/card_two_line_subimage_height"
+            android:layout_marginTop="@dimen/card_two_line_image_vertical_margin"
+            android:textAlignment="center"
+            android:textSize="@dimen/card_two_line_subtitle_text_size"
+            app:layout_constraintBaseline_toBaselineOf="@id/walk_duration"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/walk_distance_label"
+            app:layout_constraintStart_toEndOf="@id/walk_date"
+            app:layout_constraintTop_toBottomOf="@id/walk_duration"
+            tools:text="1.1"
+            />
+
+        <TextView
+            android:id="@+id/walk_distance_label"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/card_two_line_title_height"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="@dimen/card_two_line_image_vertical_margin"
+            android:textAlignment="center"
+            android:textSize="@dimen/card_two_line_subtitle_text_size"
+            app:layout_constraintBaseline_toBaselineOf="@id/walk_duration"
+            app:layout_constraintStart_toEndOf="@id/walk_distance_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/walk_duration"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Miles" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

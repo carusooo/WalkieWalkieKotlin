@@ -4,10 +4,10 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,21 +33,22 @@ import static com.example.macarus0.walkiewalkie.util.TimeStampUtil.getTime;
 public class StartWalkActivity extends AppCompatActivity implements CheckedPhotoListAdapter.DogCheckHandler {
 
     private final String TAG = "StartWalkActivity";
-    @BindView(R.id.walk_photo_timer_checkbox)
-    AppCompatCheckBox mPhotoTimerCheckBox;
+    @BindView(R.id.walk_start_options_title)
+    TextView mOptionsTitleTextView;
+    @BindView(R.id.walk_photo_timer_switch)
+    SwitchCompat mPhotoTimerSwitch;
     @BindView(R.id.walk_photo_timer_label)
     TextView mPhotoTimerLabel;
     @BindView(R.id.walk_photo_timer_picker)
     AppCompatSpinner mWalkPhotoTimerSpinner;
-    @BindView(R.id.walk_track_distance_checkbox)
-    AppCompatCheckBox mWalkTrackDistanceCheckbox;
+    @BindView(R.id.walk_track_distance_switch)
+    SwitchCompat mWalkTrackDistanceSwitch;
     @BindView(R.id.walk_track_distance_label)
     TextView mWalkTrackDistanceLabel;
     @BindView(R.id.walk_start_dog_card_recycler_view)
     RecyclerView mDogCardRecyclerView;
     @BindView(R.id.start_walk_start_button)
     Button mStartWalkButton;
-    private SimpleDateFormat sdf;
     private Walk mWalk;
     private boolean mTrackDistance;
     private boolean mPhotoReminder;
@@ -67,12 +68,13 @@ public class StartWalkActivity extends AppCompatActivity implements CheckedPhoto
         mStartWalkButton.setText(R.string.start_walk);
         mStartWalkButton.setOnClickListener(view -> startWalkPressed());
 
+        mOptionsTitleTextView.setText(R.string.walk_options_title);
         mPhotoTimerLabel.setText(R.string.photo_reminder_label);
         mPhotoReminder = true;
-        mPhotoTimerCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> mPhotoReminder = isChecked);
+        mPhotoTimerSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> mPhotoReminder = isChecked);
         mWalkTrackDistanceLabel.setText(R.string.walk_track_distance_label);
         mTrackDistance = true;
-        mWalkTrackDistanceCheckbox.setOnCheckedChangeListener((buttonView, isChecked) ->
+        mWalkTrackDistanceSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
                 mTrackDistance = isChecked);
 
         ArrayList<String> timerValueArray = new ArrayList<String>();

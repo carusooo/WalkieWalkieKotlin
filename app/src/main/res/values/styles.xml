@@ -10,4 +10,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="CardTitleText" parent="AppTheme">
+        <item name="android:textColor">@color/colorCardTitleText</item>
+        <item name="android:textSize">@dimen/card_title_text_size</item>
+    </style>
+
+    <style name="CardSubtitleText" parent="AppTheme">
+        <item name="android:textColor">@color/colorCardTitleText</item>
+        <item name="android:textSize">@dimen/card_subtitle_text_size</item>
+    </style>
+
+
 </resources>

@@ -7,60 +7,89 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.LinearLayoutCompat
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="4dp">
+                android:elevation="@dimen/card_elevation">
 
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/walk_photo_timer_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:checked="true" />
-
-                <TextView
-                    android:id="@+id/walk_photo_timer_label"
-                    android:layout_width="wrap_content"
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/list_item_text_size"
-                    tools:text="Photo reminder" />
+                    android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatSpinner
-                    android:id="@+id/walk_photo_timer_picker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </android.support.v7.widget.AppCompatSpinner>
-            </android.support.v7.widget.LinearLayoutCompat>
+                    <TextView
+                        android:id="@+id/walk_start_options_title"
+                        style="@style/CardSubtitleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/card_two_line_title_text_vert_margin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Options for this walk" />
+
+                    <TextView
+                        android:id="@+id/walk_photo_timer_label"
+                        style="@style/CardTitleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/card_text_to_switch_margin"
+                        app:layout_constraintBaseline_toBaselineOf="@id/walk_photo_timer_switch"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="Photo reminder" />
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/walk_photo_timer_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/switch_margin"
+                        android:checked="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/walk_start_options_title" />
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/walk_photo_timer_picker"
+                        style="@style/CardTitleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/card_text_to_switch_margin"
+                        app:layout_constraintBottom_toBottomOf="@id/walk_photo_timer_label"
+                        app:layout_constraintStart_toEndOf="@id/walk_photo_timer_label"
+                        app:layout_constraintTop_toTopOf="@id/walk_photo_timer_label" />
+
+                    <TextView
+                        android:id="@+id/walk_track_distance_label"
+                        style="@style/CardTitleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/card_text_to_switch_margin"
+                        app:layout_constraintBaseline_toBaselineOf="@id/walk_track_distance_switch"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="Track walk distance" />
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/walk_track_distance_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/switch_margin"
+                        android:checked="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/walk_photo_timer_switch" />
+
+                </android.support.constraint.ConstraintLayout>
 
 
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="4dp">
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/walk_track_distance_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:checked="true" />
-
-                <TextView
-                    android:id="@+id/walk_track_distance_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/list_item_text_size"
-                    tools:text="Track walk distance" />
-
-            </android.support.v7.widget.LinearLayoutCompat>
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/walk_start_dog_card_recycler_view"

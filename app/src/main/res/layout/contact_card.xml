@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150sp"
+    android:layout_height="@dimen/contact_card_height"
     android:layout_margin="@dimen/card_grid_margin">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/cardview_dark_background">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/contact_image"
@@ -25,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|start"
             android:background="@color/colorDarkTransparent"
+            android:buttonTint="@android:color/white"
             android:visibility="invisible" />
 
         <android.support.v7.widget.AppCompatImageButton
@@ -42,6 +42,8 @@
             android:layout_height="wrap_content"
             android:background="@color/colorDarkTransparent"
             android:textAlignment="center"
+            android:textSize="@dimen/card_subtitle_text_size"
+            android:layout_margin="@dimen/card_text_to_text_margin"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Doggy" />

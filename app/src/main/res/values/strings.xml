@@ -6,7 +6,9 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="add_dog">Add dog</string>
+    <string name="select_dog">Select dog</string>
     <string name="add_owner">Add owner</string>
+    <string name="select_owner">Select owner</string>
     <string name="add_dog_name_hint">Dog Name</string>
     <string name="add_address_hint">Address</string>
     <string name="add_owner_first_name_hint">First Name</string>
@@ -21,6 +23,7 @@
 
     <!--Walk Strings-->
     <string name="start_walk">Start Walk</string>
+    <string name="walk_options_title">Walk Options</string>
     <string name="photo_reminder_label">Photo reminder</string>
     <string name="photo_reminder_minutes">min</string>
     <string name="walk_track_distance_label">Track distance</string>

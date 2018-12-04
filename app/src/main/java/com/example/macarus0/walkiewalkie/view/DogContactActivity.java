@@ -146,7 +146,7 @@ public class DogContactActivity extends AppCompatActivity {
         ImageButton ownerRemoveButton = cardView.findViewById(R.id.contact_remove);
         ownerRemoveButton.setVisibility(View.INVISIBLE);
         Picasso.get().load(R.drawable.ic_default_owner_24dp).into(ownerImageView);
-        ownerNameTextView.setText(getText(R.string.add_owner));
+        ownerNameTextView.setText(getText(R.string.select_owner));
     }
 
     void selectImage() {

@@ -7,14 +7,28 @@
     <dimen name="card_two_line_image_vertical_margin">16dp</dimen>
     <dimen name="card_two_line_title_height">32dp</dimen>
     <dimen name="card_two_line_title_text_size">16sp</dimen>
+    <dimen name="card_two_line_title_text_vert_margin">16dp</dimen>
     <dimen name="card_two_line_subtitle_text_size">14sp</dimen>
     <dimen name="card_two_line_subimage_height">24dp</dimen>
     <dimen name="card_text_to_image_margin">16dp</dimen>
+    <dimen name="card_text_to_switch_margin">16dp</dimen>
     <dimen name="card_text_to_text_margin">4dp</dimen>
     <dimen name="card_grid_margin">8dp</dimen>
+    <dimen name="card_list_margin">4dp</dimen>
     <dimen name="list_item_text_size">16sp</dimen>
     <dimen name="button_to_button_margin">4dp</dimen>
+    <dimen name="list_item_wide_image_width">100dp</dimen>
+    <dimen name="list_item_wide_image_height">56dp</dimen>
+    <dimen name="list_item_wide_image_vert_margin">8dp</dimen>
+    <dimen name="list_item_wide_image_end_margin">16dp</dimen>
+    <dimen name="card_elevation">1dp</dimen>
+    <dimen name="card_title_text_size">20dp</dimen>
+    <dimen name="card_subtitle_text_size">14sp</dimen>
+    <dimen name="main_fab_margin">16dp</dimen>
+    <dimen name="switch_margin">8dp</dimen>
 
+    <dimen name="map_height">150dp</dimen>
+    <dimen name="contact_card_height">150dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

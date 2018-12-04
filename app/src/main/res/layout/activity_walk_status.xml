@@ -23,53 +23,53 @@
                 android:id="@+id/walk_distance_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_grid_margin">
+                android:layout_margin="@dimen/card_list_margin">
+
                 <android.support.v7.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/walk_distance_label"
-                        style="@style/TextAppearance.AppCompat.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_two_line_image_vertical_margin"
-                        tools:text="Walk Distance" />
+                        <TextView
+                            android:id="@+id/walk_distance_label"
+                            style="@style/CardSubtitleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/card_two_line_image_vertical_margin"
+                            tools:text="Walk Distance" />
 
-                    <TextView
-                        android:id="@+id/walk_distance_text"
-                        style="@style/TextAppearance.AppCompat.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_two_line_image_vertical_margin"
-                        tools:text="1.0 mi" />
+                        <TextView
+                            android:id="@+id/walk_distance_text"
+                            style="@style/CardTitleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/card_two_line_image_vertical_margin"
+                            tools:text="1.0 mi" />
 
-                </android.support.v7.widget.LinearLayoutCompat>
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/walk_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    map:mapType="normal"
-                    >
-                </com.google.android.gms.maps.MapView>
+                    </android.support.v7.widget.LinearLayoutCompat>
+
+                    <com.google.android.gms.maps.MapView
+                        android:id="@+id/walk_map"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/map_height"
+                        map:mapType="normal"></com.google.android.gms.maps.MapView>
                 </android.support.v7.widget.LinearLayoutCompat>
             </android.support.v7.widget.CardView>
 
             <FrameLayout
                 android:id="@+id/walk_photos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <FrameLayout
                 android:id="@+id/walk_dogs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
 
@@ -79,21 +79,21 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/button_to_button_margin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/walk_scroll_view"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/walk_end_walk_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/walk_scroll_view"
         tools:text="Skip" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/walk_end_walk_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
         android:layout_margin="@dimen/button_to_button_margin"
+        android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/walk_scroll_view"
-        app:layout_constraintStart_toEndOf="@id/walk_skip_summary_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/walk_skip_summary_button"
+        app:layout_constraintTop_toBottomOf="@+id/walk_scroll_view"
         tools:text="Send Summary" />
 
 
