@@ -63,6 +63,7 @@ public class DogListAdapter extends RecyclerView.Adapter<DogListAdapter.ViewHold
             Log.i(TAG, "getItemCount: No Dogs Yet");
             return 0;
         }
+        Log.i(TAG, "getItemCount: " + mDogs.size());
         return mDogs.size();
     }
 

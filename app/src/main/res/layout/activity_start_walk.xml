@@ -5,110 +5,103 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/walk_start_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.LinearLayoutCompat
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:elevation="@dimen/card_elevation">
 
-
-            <android.support.v7.widget.CardView
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="@dimen/card_elevation">
+                android:orientation="vertical">
 
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/walk_start_options_title"
+                    style="@style/CardSubtitleText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_margin="@dimen/card_two_line_title_text_vert_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Options for this walk" />
 
-                    <TextView
-                        android:id="@+id/walk_start_options_title"
-                        style="@style/CardSubtitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_two_line_title_text_vert_margin"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Options for this walk" />
+                <TextView
+                    android:id="@+id/walk_photo_timer_label"
+                    style="@style/CardTitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_text_to_switch_margin"
+                    app:layout_constraintBaseline_toBaselineOf="@id/walk_photo_timer_switch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Photo reminder" />
 
-                    <TextView
-                        android:id="@+id/walk_photo_timer_label"
-                        style="@style/CardTitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_text_to_switch_margin"
-                        app:layout_constraintBaseline_toBaselineOf="@id/walk_photo_timer_switch"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:text="Photo reminder" />
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/walk_photo_timer_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/switch_margin"
+                    android:checked="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/walk_start_options_title" />
 
-                    <android.support.v7.widget.SwitchCompat
-                        android:id="@+id/walk_photo_timer_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/switch_margin"
-                        android:checked="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/walk_start_options_title" />
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/walk_photo_timer_picker"
+                    style="@style/CardTitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_text_to_switch_margin"
+                    app:layout_constraintBottom_toBottomOf="@id/walk_photo_timer_label"
+                    app:layout_constraintStart_toEndOf="@id/walk_photo_timer_label"
+                    app:layout_constraintTop_toTopOf="@id/walk_photo_timer_label" />
 
-                    <android.support.v7.widget.AppCompatSpinner
-                        android:id="@+id/walk_photo_timer_picker"
-                        style="@style/CardTitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_text_to_switch_margin"
-                        app:layout_constraintBottom_toBottomOf="@id/walk_photo_timer_label"
-                        app:layout_constraintStart_toEndOf="@id/walk_photo_timer_label"
-                        app:layout_constraintTop_toTopOf="@id/walk_photo_timer_label" />
+                <TextView
+                    android:id="@+id/walk_track_distance_label"
+                    style="@style/CardTitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_text_to_switch_margin"
+                    app:layout_constraintBaseline_toBaselineOf="@id/walk_track_distance_switch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Track walk distance" />
 
-                    <TextView
-                        android:id="@+id/walk_track_distance_label"
-                        style="@style/CardTitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_text_to_switch_margin"
-                        app:layout_constraintBaseline_toBaselineOf="@id/walk_track_distance_switch"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:text="Track walk distance" />
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/walk_track_distance_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/switch_margin"
+                    android:checked="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/walk_photo_timer_switch" />
 
-                    <android.support.v7.widget.SwitchCompat
-                        android:id="@+id/walk_track_distance_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/switch_margin"
-                        android:checked="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/walk_photo_timer_switch" />
-
-                </android.support.constraint.ConstraintLayout>
+            </android.support.constraint.ConstraintLayout>
 
 
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/walk_start_dog_card_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:itemCount="13"
-                tools:layoutManager="android.support.v7.widget.GridLayoutManager"
-                tools:listitem="@layout/contact_card"
-                tools:spanCount="3">
-
-            </android.support.v7.widget.RecyclerView>
-
-        </android.support.v7.widget.LinearLayoutCompat>
-    </ScrollView>
+        </android.support.v7.widget.CardView>
+    </android.support.v7.widget.LinearLayoutCompat>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/walk_start_dog_card_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/walk_start_header"
+            app:layout_constraintBottom_toTopOf="@id/start_walk_start_button"
+            tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+            tools:listitem="@layout/contact_card"
+            tools:spanCount="3"/>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/start_walk_start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/walk_start_dog_card_recycler_view"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Start Walk" />
 
