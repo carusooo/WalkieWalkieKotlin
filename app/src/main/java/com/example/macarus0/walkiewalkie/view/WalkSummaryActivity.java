@@ -93,13 +93,12 @@ public class WalkSummaryActivity extends AppCompatActivity implements OnMapReady
         } else {
             mSkipSharingButton.setVisibility(View.GONE);
         }
+        mWalkieViewModel.getWalkById(mWalkId).observe(this, this::showWalkUI);
         mWalkieViewModel.getDogOwnersOnWalk(mWalkId).observe(this, owners -> {
             mWalkOwners = owners;
             enableSharing();
         });
         mWalkMap.onCreate(mapViewBundle);
-
-        mWalkieViewModel.getWalkById(mWalkId).observe(this, this::showWalkUI);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (mWalkPhotosFragment == null) {
