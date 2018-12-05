@@ -55,14 +55,14 @@ public class SelectDogActivity extends AppCompatActivity implements DogListAdapt
         Intent intent = new Intent();
         intent.putExtra(DOG_ID, id);
         setResult(Activity.RESULT_OK, intent);
-        finish();
+        finishAfterTransition();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            finishAfterTransition();
         }
 
         return super.onOptionsItemSelected(item);

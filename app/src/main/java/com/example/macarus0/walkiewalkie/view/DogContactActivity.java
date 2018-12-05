@@ -1,5 +1,6 @@
 package com.example.macarus0.walkiewalkie.view;
 
+import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -198,7 +199,8 @@ public class DogContactActivity extends AppCompatActivity {
             mWalkieViewModel.insertDog(mDog).observe(this, this::setDogId);
         }
         Intent intent = new Intent(this, SelectOwnerActivity.class);
-        startActivityForResult(intent, ownerSlot);
+        startActivityForResult(intent, ownerSlot,
+                ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 
     void saveAndExit() {

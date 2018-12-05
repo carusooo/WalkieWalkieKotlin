@@ -55,14 +55,14 @@ public class SelectOwnerActivity extends AppCompatActivity implements OwnerListA
         Intent intent = new Intent();
         intent.putExtra(OWNER_ID, id);
         setResult(Activity.RESULT_OK, intent);
-        finish();
+        finishAfterTransition();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            finishAfterTransition();
         }
 
         return super.onOptionsItemSelected(item);
