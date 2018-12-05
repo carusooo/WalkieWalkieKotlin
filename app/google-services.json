@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "204471442155",
+    "firebase_url": "https://macaruso-android-nanodegree.firebaseio.com",
+    "project_id": "macaruso-android-nanodegree",
+    "storage_bucket": "macaruso-android-nanodegree.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204471442155:android:3345804a39540d3f",
+        "android_client_info": {
+          "package_name": "android.example.com.squawker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204471442155-a9e5vl8c072odnu51vsdvpsberuqnfr5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.example.com.squawker",
+            "certificate_hash": "6e447a40a81a85da95221dc3a3069ca76588e1bc"
+          }
+        },
+        {
+          "client_id": "204471442155-uto09p8pah3mt4s2rlepak8f8tjdrun1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLJj-chPksIIAxVEppC_vmyXKbl1Wp_9A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204471442155-uto09p8pah3mt4s2rlepak8f8tjdrun1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204471442155:android:a7ff0b159c4b937d",
+        "android_client_info": {
+          "package_name": "com.example.macarus0.walkiewalkie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204471442155-v82o2nc57bu6qh38sri5hb9j6ph8asrk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.macarus0.walkiewalkie",
+            "certificate_hash": "6e447a40a81a85da95221dc3a3069ca76588e1bc"
+          }
+        },
+        {
+          "client_id": "204471442155-uto09p8pah3mt4s2rlepak8f8tjdrun1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLJj-chPksIIAxVEppC_vmyXKbl1Wp_9A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204471442155-uto09p8pah3mt4s2rlepak8f8tjdrun1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
