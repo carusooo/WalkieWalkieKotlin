@@ -6,11 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".view.SelectOwnerActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/select_contact_toolbar_layout"
+        android:elevation="@dimen/toolbar_elevation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/select_contact_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/select_contact_toolbar_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/card_title_text_size"
+                tools:text="Select Owner" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/select_items_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_item_button"/>
+        app:layout_constraintTop_toBottomOf="@id/select_contact_toolbar_layout" />
 
 </android.support.constraint.ConstraintLayout>
