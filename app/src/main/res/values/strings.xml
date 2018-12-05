@@ -61,4 +61,12 @@
     <string name="widget_no_walk">No walk in progress</string>
     <string name="widget_walk_title">Dogs on Walk</string>
 
+    <!--a11y Label Strings-->
+    <string name="a11y_start_walk">start walk</string>
+    <string name="a11y_save_changes">save changes</string>
+    <string name="a11y_cancel_changes">cancel changes</string>
+    <string name="a11y_edit_photo">edit photo</string>
+    <string name="a11y_select_dog">select dog</string>
+    <string name="a11y_remove_association">remove association</string>
+
 </resources>

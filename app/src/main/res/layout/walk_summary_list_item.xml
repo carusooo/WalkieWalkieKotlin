@@ -12,6 +12,7 @@
         android:layout_height="@dimen/card_two_line_card_height">
 
         <ImageView
+            tools:ignore="ContentDescription"
             android:id="@+id/walk_thumb"
             android:layout_width="@dimen/list_item_wide_image_width"
             android:layout_height="@dimen/list_item_wide_image_height"

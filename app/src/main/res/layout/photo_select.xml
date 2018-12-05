@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
+        tools:ignore="ContentDescription"
         android:id="@+id/photo_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,6 +14,7 @@
 
     <ImageButton
         android:id="@+id/edit_photo_button"
+        android:contentDescription="@string/a11y_edit_photo"
         android:layout_width="24sp"
         android:layout_height="24sp"
         android:background="@color/colorDarkTransparent"
