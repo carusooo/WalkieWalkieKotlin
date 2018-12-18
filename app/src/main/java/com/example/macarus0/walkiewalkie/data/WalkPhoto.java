@@ -1,12 +1,18 @@
 package com.example.macarus0.walkiewalkie.data;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class WalkPhoto {
+    @Ignore
+    public long getPhotoId() {
+        return photoId;
+    }
+
     @PrimaryKey(autoGenerate = true)
-    int photoId;
+    long photoId;
 
     public String getPhotoUri() {
         return photoUri;

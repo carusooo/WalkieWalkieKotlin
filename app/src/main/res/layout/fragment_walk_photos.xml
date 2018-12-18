@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             tools:itemCount="5"
             tools:layoutManager="android.support.v7.widget.GridLayoutManager"
-            tools:listitem="@layout/photo_card"
+            tools:listitem="@layout/contact_card"
             tools:orientation="horizontal">
 
         </android.support.v7.widget.RecyclerView>

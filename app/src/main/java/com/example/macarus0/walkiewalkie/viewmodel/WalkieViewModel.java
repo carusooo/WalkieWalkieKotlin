@@ -229,6 +229,12 @@ public class WalkieViewModel extends AndroidViewModel {
         ).start();
     }
 
+    public void deleteWalkPhoto(WalkPhoto walkPhoto) {
+        new Thread(() ->
+                getDb().getWalkPhotoDao().deletePhoto(walkPhoto.getPhotoId())
+        ).start();
+    }
+
     public LiveData<List<WalkPhoto>> getWalkPhotos(long walkId) {
         return getDb().getWalkPhotoDao().getAllWalkPhotos(walkId);
     }

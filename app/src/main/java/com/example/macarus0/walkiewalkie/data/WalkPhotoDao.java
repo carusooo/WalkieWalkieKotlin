@@ -16,4 +16,6 @@ public abstract class WalkPhotoDao {
     @Insert
     public abstract void addPhoto(WalkPhoto walkPhoto);
 
+    @Query("delete from walkphoto where walkphoto.photoId = :photoId")
+    public abstract void deletePhoto(long photoId);
 }

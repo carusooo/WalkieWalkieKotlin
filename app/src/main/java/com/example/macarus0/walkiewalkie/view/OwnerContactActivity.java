@@ -14,7 +14,6 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -139,7 +138,7 @@ public class OwnerContactActivity extends AppCompatActivity {
     void showDogUI(Dog dog, CardView cardView) {
         ImageView dogImageView = cardView.findViewById(R.id.contact_image);
         TextView dogNameTextView = cardView.findViewById(R.id.contact_name);
-        ImageButton dogRemoveButton = cardView.findViewById(R.id.contact_remove);
+        ImageButton dogRemoveButton = cardView.findViewById(R.id.item_remove);
         dogRemoveButton.setVisibility(View.VISIBLE);
         dogRemoveButton.setOnClickListener(v -> removeDog(dog.getDogId(), cardView));
         Picasso.get().load(dog.getPhoto()).placeholder(R.drawable.ic_default_dog_24dp).into(dogImageView);
@@ -159,7 +158,7 @@ public class OwnerContactActivity extends AppCompatActivity {
     void showAddDogUI(CardView cardView) {
         ImageView dogImageView = cardView.findViewById(R.id.contact_image);
         TextView dogNameTextView = cardView.findViewById(R.id.contact_name);
-        ImageButton dogRemoveButton = cardView.findViewById(R.id.contact_remove);
+        ImageButton dogRemoveButton = cardView.findViewById(R.id.item_remove);
         dogRemoveButton.setVisibility(View.INVISIBLE);
         Picasso.get().load(R.drawable.ic_default_dog_24dp).into(dogImageView);
         dogNameTextView.setText(getText(R.string.select_dog));

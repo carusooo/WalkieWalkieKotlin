@@ -121,7 +121,7 @@ public class DogContactActivity extends AppCompatActivity {
     void showOwnerUI(Owner owner, CardView cardView) {
         ImageView ownerImageView = cardView.findViewById(R.id.contact_image);
         TextView ownerNameTextView = cardView.findViewById(R.id.contact_name);
-        ImageButton ownerRemoveButton = cardView.findViewById(R.id.contact_remove);
+        ImageButton ownerRemoveButton = cardView.findViewById(R.id.item_remove);
         ownerRemoveButton.setVisibility(View.VISIBLE);
         ownerRemoveButton.setOnClickListener(v -> removeOwner(owner.getOwnerId(), cardView));
         Picasso.get().load(owner.getPhoto()).placeholder(R.drawable.ic_default_owner_24dp).into(ownerImageView);
@@ -142,7 +142,7 @@ public class DogContactActivity extends AppCompatActivity {
     void showAddOwnerUI(CardView cardView) {
         ImageView ownerImageView = cardView.findViewById(R.id.contact_image);
         TextView ownerNameTextView = cardView.findViewById(R.id.contact_name);
-        ImageButton ownerRemoveButton = cardView.findViewById(R.id.contact_remove);
+        ImageButton ownerRemoveButton = cardView.findViewById(R.id.item_remove);
         ownerRemoveButton.setVisibility(View.INVISIBLE);
         Picasso.get().load(R.drawable.ic_default_owner_24dp).into(ownerImageView);
         ownerNameTextView.setText(getText(R.string.select_owner));

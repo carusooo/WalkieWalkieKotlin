@@ -1,20 +1,14 @@
 package com.example.macarus0.walkiewalkie.view;
 
-import android.Manifest;
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,7 +21,6 @@ import android.widget.TextView;
 import com.example.macarus0.walkiewalkie.R;
 import com.example.macarus0.walkiewalkie.data.WalkPhoto;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,32 +41,24 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link WalkPhotosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WalkPhotosFragment extends Fragment {
-
-    private static final String TAG = "WalkPhotosFragment";
+public class WalkPhotosFragment extends Fragment implements DeletablePhotoListAdapter.DeleteHandler {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-
+    private static final String TAG = "WalkPhotosFragment";
     private static final String ALLOW_NEW_PHOTOS = "allow_new_photos";
+    @BindView(R.id.walk_photos_rv)
+    public RecyclerView mWalkRecyclerView;
     @BindView(R.id.walk_photos_title)
     TextView mWalkPhotosTitle;
     @BindView(R.id.walk_take_photo_button)
     Button mWalkTakePhotoButton;
-    @BindView(R.id.walk_photos_rv)
-    public RecyclerView mWalkRecyclerView;
-    private WalkPhotoListAdapter walkPhotoListAdapter;
+    private DeletablePhotoListAdapter walkPhotoListAdapter;
     private boolean mAllowNewPhotos;
     private Uri mLastPhotoUri;
     private String mLastPhotoPath;
     private long mWalkId;
-
-    public List<WalkPhoto> getWalkPhotos() {
-        return mWalkPhotos;
-    }
-
     private List<WalkPhoto> mWalkPhotos;
     private WalkieViewModel walkieViewModel;
-
     public WalkPhotosFragment() {
         // Required empty public constructor
     }
@@ -91,6 +76,10 @@ public class WalkPhotosFragment extends Fragment {
         args.putBoolean(ALLOW_NEW_PHOTOS, allowNewPhotos);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public List<WalkPhoto> getWalkPhotos() {
+        return mWalkPhotos;
     }
 
     public void setWalkId(long mWalkId) {
@@ -124,7 +113,9 @@ public class WalkPhotosFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),
                 3);
         mWalkRecyclerView.setLayoutManager(gridLayoutManager);
-        walkPhotoListAdapter = new WalkPhotoListAdapter();
+        walkPhotoListAdapter = new DeletablePhotoListAdapter();
+        walkPhotoListAdapter.setShowPhotoLabels(false);
+        walkPhotoListAdapter.setDeleteHandler(this::onDeletePress);
         mWalkRecyclerView.setAdapter(walkPhotoListAdapter);
         walkieViewModel.getWalkPhotos(mWalkId).observe(this, this::showPhotos);
         return view;
@@ -148,7 +139,7 @@ public class WalkPhotosFragment extends Fragment {
             photoFile = createImageFile();
         } catch (IOException ex) {
             // Error occurred while creating the File
-            Log.e(TAG, "takePhoto: Unable to create the file "+ex.getMessage());
+            Log.e(TAG, "takePhoto: Unable to create the file " + ex.getMessage());
         }
         // Continue only if the File was successfully created
         if (photoFile != null) {
@@ -190,6 +181,10 @@ public class WalkPhotosFragment extends Fragment {
         return image;
     }
 
+    @Override
+    public void onDeletePress(int index) {
+        walkieViewModel.deleteWalkPhoto(mWalkPhotos.get(index));
+    }
 
 
     /**
