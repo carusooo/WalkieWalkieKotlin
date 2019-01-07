@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.macarus0.walkiewalkie.data.Dog;
+import com.example.macarus0.walkiewalkie.data.DogOwner;
 import com.example.macarus0.walkiewalkie.data.Owner;
 import com.example.macarus0.walkiewalkie.data.Walk;
 import com.example.macarus0.walkiewalkie.data.WalkLocation;
@@ -54,32 +55,18 @@ public class WalkieViewModel extends AndroidViewModel {
 
     // Methods used in Owner Views
 
-    public LiveData<List<Dog>> getAllAvailableDogs() {
-        return getDb().getDogDao().getAllDogs();
+    public LiveData<List<Dog>> getAllAvailableDogs(long ownerId) {
+        return getDb().getDogDao().getAvailableDogs(ownerId);
     }
 
-    public void addDogToOwner(long dogId, long ownerId) {
-        // Get the owner object and add the dog in slot one or two
-        new Thread(() -> {
-            Owner owner = getDb().getOwnerDao().getOwnerByIdSync(ownerId);
-            if (owner.getDogId1() == 0) {
-                owner.setDogId1(dogId);
-            } else if (owner.getDogId2() == 0) {
-                owner.setDogId2(dogId);
-            }
-            getDb().getOwnerDao().updateOwner(owner);
-        }).start();
+    public LiveData<List<Dog>> getOwnerDogs(long ownerId) {
+        return getDb().getDogDao().getDogsbyOwner(ownerId);
     }
 
-    public void removeOwnerFromDog(long dogId, long ownerId) {
+
+    public void removeOwnerFromDog(long ownerId, long dogId) {
         new Thread(() -> {
-            Owner owner = getDb().getOwnerDao().getOwnerByIdSync(ownerId);
-            if (owner.getDogId1() == dogId) {
-                owner.setDogId1(0);
-            } else if (owner.getDogId2() == dogId) {
-                owner.setDogId2(0);
-            }
-            getDb().getOwnerDao().updateOwner(owner);
+            getDb().getDogOwnerDao().delete(dogId, ownerId);
         }).start();
     }
 
@@ -116,14 +103,12 @@ public class WalkieViewModel extends AndroidViewModel {
 
     // Methods used in Dog Views
 
-    public LiveData<List<Owner>> getAllAvailableOwners() {
-        return getDb().getOwnerDao().getAvailableOwners();
+    public LiveData<List<Owner>> getAllAvailableOwners(long dogId) {
+        return getDb().getOwnerDao().getAvailableOwners(dogId);
     }
 
-    public void updateDog(Dog dog) {
-        new Thread(() ->
-                getDb().getDogDao().updateDog(dog)
-        ).start();
+    public LiveData<List<Owner>> getDogOwners(long dogId) {
+        return getDb().getOwnerDao().getOwnersbyDog(dogId);
     }
 
     public void updateDogSync(Dog dog) {
@@ -131,30 +116,8 @@ public class WalkieViewModel extends AndroidViewModel {
     }
 
     public void addOwnerToDog(long ownerId, long dogId) {
-        // Get the dog object and add the owner in slot one or two
         new Thread(() -> {
-            Dog dog = getDb().getDogDao().getDogByIdSync(dogId);
-            if (dog.getOwnerId1() == 0) {
-                dog.setOwnerId1(ownerId);
-            } else if (dog.getOwnerId2() == 0) {
-                dog.setOwnerId2(ownerId);
-            } else {
-                Log.e(TAG, "addOwnerToDog: Couldn't find empty slot " + dog.getOwnerId1()
-                        + " " + dog.getOwnerId2());
-            }
-            getDb().getDogDao().updateDog(dog);
-        }).start();
-    }
-
-    public void removeDogFromOwner(long ownerId, long dogId) {
-        new Thread(() -> {
-            Dog dog = getDb().getDogDao().getDogByIdSync(dogId);
-            if (dog.getOwnerId1() == ownerId) {
-                dog.setOwnerId1(0);
-            } else if (dog.getOwnerId2() == ownerId) {
-                dog.setOwnerId2(0);
-            }
-            getDb().getDogDao().updateDog(dog);
+            getDb().getDogOwnerDao().insert(new DogOwner(dogId, ownerId));
         }).start();
     }
 
@@ -190,7 +153,7 @@ public class WalkieViewModel extends AndroidViewModel {
             List<WalkWithDogs> walkWithDogsList = new ArrayList<>();
             for (Dog dog : dogs) {
                 WalkWithDogs walkWithDogs = new WalkWithDogs();
-                walkWithDogs.setDogId(dog.getDogId());
+                walkWithDogs.setDogId(dog.getId());
                 walkWithDogs.setWalkId(walkId);
                 walkWithDogsList.add(walkWithDogs);
             }
@@ -229,9 +192,9 @@ public class WalkieViewModel extends AndroidViewModel {
         ).start();
     }
 
-    public void deleteWalkPhoto(WalkPhoto walkPhoto) {
+    public void deleteWalkPhoto(long id) {
         new Thread(() ->
-                getDb().getWalkPhotoDao().deletePhoto(walkPhoto.getPhotoId())
+                getDb().getWalkPhotoDao().deletePhoto(id)
         ).start();
     }
 

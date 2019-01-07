@@ -182,8 +182,8 @@ public class WalkPhotosFragment extends Fragment implements DeletablePhotoListAd
     }
 
     @Override
-    public void onDeletePress(int index) {
-        walkieViewModel.deleteWalkPhoto(mWalkPhotos.get(index));
+    public void onDeletePress(long id) {
+        walkieViewModel.deleteWalkPhoto(id);
     }
 
 

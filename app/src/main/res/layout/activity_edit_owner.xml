@@ -7,25 +7,23 @@
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/contact_save_button"
-        android:contentDescription="@string/a11y_save_changes"
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_check_black_24dp"
         android:background="@android:color/transparent"
-        />
+        android:contentDescription="@string/a11y_save_changes"
+        android:src="@drawable/ic_check_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/contact_cancel_button"
-        android:contentDescription="@string/a11y_cancel_changes"
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_close_black_24dp"
         android:background="@android:color/transparent"
-        />
+        android:contentDescription="@string/a11y_cancel_changes"
+        android:src="@drawable/ic_close_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         android:id="@+id/owner_photo"
@@ -114,31 +112,30 @@
         app:layout_constraintTop_toBottomOf="@id/owner_email"
         tools:text=" 123 Some Street \n City, State\n 12345" />
 
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/add_dog_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/owner_address"
+        tools:text="SELECT DOG" />
+
     <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/dog_cards"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/owner_address">
+        app:layout_constraintTop_toBottomOf="@id/add_dog_button">
 
-        <include
-            android:id="@+id/dog1_card"
-            layout="@layout/contact_card"
-            android:layout_height="150dp"
-            android:layout_width="100dp"
-            android:layout_margin="@dimen/card_grid_margin"/>
-
-        <include
-            android:id="@+id/dog2_card"
-            layout="@layout/contact_card"
-            android:layout_height="150dp"
-            android:layout_width="100dp"
-            android:layout_margin="@dimen/card_grid_margin"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dog_card_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
 
 
     </android.support.v7.widget.LinearLayoutCompat>
-
 
 
 </android.support.constraint.ConstraintLayout>

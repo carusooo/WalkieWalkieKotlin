@@ -1,6 +1,6 @@
 package com.example.macarus0.walkiewalkie.view;
 
-import android.net.Uri;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.macarus0.walkiewalkie.R;
-import com.example.macarus0.walkiewalkie.data.Dog;
-import com.example.macarus0.walkiewalkie.data.WalkPhoto;
+import com.example.macarus0.walkiewalkie.data.PhotoItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,9 +23,15 @@ import butterknife.ButterKnife;
 public class DeletablePhotoListAdapter extends RecyclerView.Adapter<DeletablePhotoListAdapter.ViewHolder> {
 
     private static final String TAG = "DeletablePhotoListAdapter";
-    List<WalkPhoto> mPhotos;
+    List<? extends PhotoItem> mPhotos;
     DeleteHandler mDeleteHandler = null;
     boolean showPhotoLabels = false;
+
+    public void setPlaceholderImage(Drawable placeholderImage) {
+        this.placeholderImage = placeholderImage;
+    }
+
+    Drawable placeholderImage;
 
     public void setDeleteHandler(DeleteHandler mDeleteHandler) {
         this.mDeleteHandler = mDeleteHandler;
@@ -35,8 +41,9 @@ public class DeletablePhotoListAdapter extends RecyclerView.Adapter<DeletablePho
         this.showPhotoLabels = showPhotoLabels;
     }
 
-    public void setPhotos(List<WalkPhoto> photos) {
+    public void setPhotos(List<? extends PhotoItem> photos) {
         mPhotos = photos;
+        Log.i(TAG, "setPhotos: Loaded photos " + photos.size());
         notifyDataSetChanged();
     }
 
@@ -50,9 +57,15 @@ public class DeletablePhotoListAdapter extends RecyclerView.Adapter<DeletablePho
 
     @Override
     public void onBindViewHolder(@NonNull DeletablePhotoListAdapter.ViewHolder holder, int position) {
-        WalkPhoto walkPhoto = this.mPhotos.get(position);
-        Log.i(TAG, "onBindViewHolder: Loading image " + walkPhoto.getPhotoUri());
-        holder.walkImage.setImageURI(Uri.parse(walkPhoto.getPhotoUri()));
+        PhotoItem photoItem = this.mPhotos.get(position);
+        Log.i(TAG, "onBindViewHolder: Loading image " + photoItem.getPhotoUri());
+        Picasso.get().load(photoItem.getPhotoUri()).placeholder(this.placeholderImage).into(holder.walkImage);
+        if(showPhotoLabels) {
+            holder.tv.setText(photoItem.getName());
+        }
+        holder.removeButton.setOnClickListener((View v) ->
+                mDeleteHandler.onDeletePress(photoItem.getId()));
+
     }
 
     @Override
@@ -66,7 +79,7 @@ public class DeletablePhotoListAdapter extends RecyclerView.Adapter<DeletablePho
     }
 
     interface DeleteHandler {
-        void onDeletePress(int index);
+        void onDeletePress(long id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,13 +95,10 @@ public class DeletablePhotoListAdapter extends RecyclerView.Adapter<DeletablePho
             super(itemView);
             ButterKnife.bind(this, itemView);
             removeButton.setVisibility(View.VISIBLE);
-            removeButton.setOnClickListener((View v) ->
-                    mDeleteHandler.onDeletePress(this.getAdapterPosition()));
 
             if (!showPhotoLabels) {
                 tv.setVisibility(View.INVISIBLE);
             }
-
         }
 
     }

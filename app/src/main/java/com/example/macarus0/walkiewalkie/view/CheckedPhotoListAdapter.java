@@ -52,7 +52,7 @@ public class CheckedPhotoListAdapter extends RecyclerView.Adapter<CheckedPhotoLi
     public void onBindViewHolder(@NonNull CheckedPhotoListAdapter.ViewHolder holder, int position) {
         Dog dog = this.mDogs.get(position);
         holder.dogName.setText(dog.getName());
-        Picasso.get().load(dog.getPhoto()).placeholder(R.drawable.ic_default_dog_24dp).into(holder.dogImage);
+        Picasso.get().load(dog.getPhotoUri()).placeholder(R.drawable.ic_default_dog_24dp).into(holder.dogImage);
         holder.dog = dog;
     }
 

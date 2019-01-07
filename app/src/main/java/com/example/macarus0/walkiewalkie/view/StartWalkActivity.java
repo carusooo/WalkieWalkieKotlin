@@ -20,7 +20,6 @@ import com.example.macarus0.walkiewalkie.data.Walk;
 import com.example.macarus0.walkiewalkie.util.PhotoReminderAlarm;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 

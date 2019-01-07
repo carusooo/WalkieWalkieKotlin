@@ -5,14 +5,16 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
-public class WalkPhoto {
+public class WalkPhoto implements PhotoItem{
     @Ignore
-    public long getPhotoId() {
+    public long getId() {
         return photoId;
     }
 
     @PrimaryKey(autoGenerate = true)
     long photoId;
+
+    public String getName() {return null;}
 
     public String getPhotoUri() {
         return photoUri;

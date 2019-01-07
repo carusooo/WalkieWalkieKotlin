@@ -15,20 +15,20 @@ public interface OwnerDao {
     @Query("Select * from owner")
     LiveData<List<Owner>> getAllOwners();
 
-    @Query("Select * from owner where dogId1 = :dogId OR dogId2= :dogId")
-    LiveData<List<Owner>> getOwnersbyDog(int dogId);
-
-    @Query("Select * from owner where dogId1 = 0 OR dogId2= 0")
-    LiveData<List<Owner>> getAvailableOwners();
-
     @Query("Select * from owner where ownerId = :ownerId")
     LiveData<Owner> getOwnerById(long ownerId);
+
+    @Query("Select * from owner JOIN DogOwner on Dogowner.Ownerid = Owner.ownerId WHERE Dogowner.dogId = :dogId ")
+    LiveData<List<Owner>> getOwnersbyDog(long dogId);
+
+    @Query("Select * from owner WHERE owner.ownerId NOT IN (SELECT ownerId from Dogowner WHERE dogId = :dogId)")
+    LiveData<List<Owner>> getAvailableOwners(long dogId);
 
     @Query("Select * from owner where ownerId = :ownerId")
     Owner getOwnerByIdSync(long ownerId);
 
-    @Query("Select * from owner join dog on (dog.ownerId1 = ownerId OR dog.ownerId2 = ownerId) join walkwithdogs on walkwithdogs.dogId = " +
-            "dog.dogId where walkwithdogs.walkId = :walkId")
+    @Query("Select * from owner join DogOwner on walkwithdogs.dogId = DogOwner.dogId join walkwithdogs on walkwithdogs.dogId = " +
+            "DogOwner.dogId where walkwithdogs.walkId = :walkId")
     LiveData<List<Owner>> getDogOwnersOnWalk(long walkId);
 
     @Insert

@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 public class SelectOwnerActivity extends AppCompatActivity implements OwnerListAdapter.OwnerClickHandler{
 
     public static final String OWNER_ID = "owner_id";
+    public static final String DOG_ID = "dog_id";
 
     WalkieViewModel mViewModel;
     @BindView(R.id.select_contact_toolbar)
@@ -40,6 +41,9 @@ public class SelectOwnerActivity extends AppCompatActivity implements OwnerListA
             getSupportActionBar().setTitle(R.string.select_owner);
         }
 
+        Intent intent = getIntent();
+        long dogId = intent.getLongExtra(DOG_ID, -1);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mItemsRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -47,7 +51,7 @@ public class SelectOwnerActivity extends AppCompatActivity implements OwnerListA
         ownerListAdapter.setOwnerClickHandler(this::ownerClick);
         ownerListAdapter.setShowDogs(false);
         mItemsRecyclerView.setAdapter(ownerListAdapter);
-        mViewModel.getAllAvailableOwners().observe(this, ownerListAdapter::setOwners);
+        mViewModel.getAllAvailableOwners(dogId).observe(this, ownerListAdapter::setOwners);
     }
 
     @Override

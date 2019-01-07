@@ -8,7 +8,7 @@ import java.util.List;
 
 @Dao
 public abstract class WalkWithDogsDao {
-    @Query("SELECT * from dog JOIN walkwithdogs on dog.dogId = walkWithDogs.dogId " +
+    @Query("SELECT * from Dog JOIN walkwithdogs on Dog.dogId = walkWithDogs.dogId " +
             "WHERE walkId = :walkId")
     public abstract List<Dog> getDogsOnWalk(long walkId);
 

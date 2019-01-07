@@ -5,7 +5,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
-public class Owner {
+public class Owner implements PhotoItem {
 
     @PrimaryKey(autoGenerate = true)
     long ownerId;
@@ -19,7 +19,7 @@ public class Owner {
     String address;
 
     @Ignore
-    public long getOwnerId() {
+    public long getId() {
         return ownerId;
     }
 
@@ -49,12 +49,12 @@ public class Owner {
     }
 
     @Ignore
-    public String getPhoto() {
+    public String getPhotoUri() {
         return photo;
     }
 
     @Ignore
-    public void setPhoto(String photo) {
+    public void setPhotoUri(String photo) {
         this.photo = photo;
     }
 
@@ -108,4 +108,8 @@ public class Owner {
         this.address = address;
     }
 
+    @Override
+    public String getName() {
+        return firstName;
+    }
 }

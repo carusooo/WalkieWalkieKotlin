@@ -10,17 +10,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.macarus0.walkiewalkie.R;
-import com.example.macarus0.walkiewalkie.data.Dog;
 import com.example.macarus0.walkiewalkie.data.Owner;
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel;
 import com.squareup.picasso.Picasso;
@@ -33,8 +31,8 @@ public class OwnerContactActivity extends AppCompatActivity {
     public static final String OWNER_ID = "owner_id";
     public static final int ADD_OWNER = -1;
     public static final int SELECT_OWNER_PICTURE = 201;
-    public static final int SELECT_DOG1 = 202;
-    public static final int SELECT_DOG2 = 203;
+    public static final int SELECT_DOG = 202;
+
     private static final String TAG = "OwnerContactActivity";
     @BindView(R.id.owner_photo)
     ConstraintLayout ownerPhoto;
@@ -48,15 +46,16 @@ public class OwnerContactActivity extends AppCompatActivity {
     EditText ownerEmail;
     @BindView(R.id.owner_address)
     EditText ownerAddress;
-    @BindView(R.id.dog1_card)
-    CardView dog1CardView;
-    @BindView(R.id.dog2_card)
-    CardView dog2CardView;
+    @BindView(R.id.dog_card_rv)
+    RecyclerView dogCardRecyclerView;
+    @BindView(R.id.add_dog_button)
+    AppCompatButton addDogButton;
     @BindView(R.id.contact_save_button)
     AppCompatImageButton saveButton;
     @BindView(R.id.contact_cancel_button)
     AppCompatImageButton cancelButton;
     AppCompatImageButton editOwnerPhotoButton;
+    DeletablePhotoListAdapter dogsList;
 
     ImageView ownerImageView;
     private long mOwnerId;
@@ -83,6 +82,18 @@ public class OwnerContactActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> saveAndExit());
         cancelButton.setOnClickListener(v -> finish());
 
+        dogsList = new DeletablePhotoListAdapter();
+        dogsList.setShowPhotoLabels(true);
+        dogsList.setDeleteHandler(this::removeDog);
+        dogsList.setPlaceholderImage(getDrawable(R.drawable.ic_default_dog_24dp));
+        dogCardRecyclerView.setAdapter(dogsList);
+
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        lm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        dogCardRecyclerView.setLayoutManager(lm);
+        addDogButton.setText(R.string.select_dog);
+        addDogButton.setOnClickListener(view -> selectDog());
+
         Intent intent = getIntent();
         mOwnerId = intent.getLongExtra(OWNER_ID, ADD_OWNER);
         if (mOwnerId == ADD_OWNER) {
@@ -91,8 +102,8 @@ public class OwnerContactActivity extends AppCompatActivity {
         } else {
             mWalkieViewModel.getOwnerById(mOwnerId).observe(this,
                     this::showOwnerUI);
+            mWalkieViewModel.getOwnerDogs(mOwnerId).observe(this, dogs -> dogsList.setPhotos(dogs));
         }
-
     }
 
     void showAddOwnerUI() {
@@ -102,66 +113,17 @@ public class OwnerContactActivity extends AppCompatActivity {
         ownerEmail.setHint(getString(R.string.add_owner_email_hint));
         ownerPhone.setHint(getString(R.string.add_owner_phone_number_hint));
         ownerImageView.setImageResource(R.drawable.ic_default_owner_24dp);
-        showAddDog1UI();
-        showAddDog2UI();
     }
 
     void showOwnerUI(Owner owner) {
         mOwner = owner;
-        if (mOwner.getDogId1() != 0) {
-            showDog1UI(mOwner.getDogId1());
-        } else {
-            showAddDog1UI();
-        }
-        if (mOwner.getDogId2() != 0) {
-            showDog2UI(mOwner.getDogId2());
-        } else {
-            showAddDog2UI();
-        }
         Log.i(TAG, "showOwnerUI: " + owner.getDogId1());
         ownerFirstName.setText(owner.getFirstName());
         ownerLastName.setText(owner.getLastName());
         ownerAddress.setText(owner.getAddress());
         ownerEmail.setText(owner.getEmailAddress());
         ownerPhone.setText(owner.getPhoneNumber());
-        Picasso.get().load(owner.getPhoto()).placeholder(R.drawable.ic_default_owner_24dp).into(ownerImageView);
-    }
-
-    void showDog1UI(long dogId) {
-        new UpdateDog(dogId, dog1CardView).execute();
-    }
-
-    void showDog2UI(long dogId) {
-        new UpdateDog(dogId, dog2CardView).execute();
-    }
-
-    void showDogUI(Dog dog, CardView cardView) {
-        ImageView dogImageView = cardView.findViewById(R.id.contact_image);
-        TextView dogNameTextView = cardView.findViewById(R.id.contact_name);
-        ImageButton dogRemoveButton = cardView.findViewById(R.id.item_remove);
-        dogRemoveButton.setVisibility(View.VISIBLE);
-        dogRemoveButton.setOnClickListener(v -> removeDog(dog.getDogId(), cardView));
-        Picasso.get().load(dog.getPhoto()).placeholder(R.drawable.ic_default_dog_24dp).into(dogImageView);
-        dogNameTextView.setText(dog.getName());
-    }
-
-    void showAddDog1UI() {
-        showAddDogUI(dog1CardView);
-        dog1CardView.setOnClickListener(v -> selectDog(SELECT_DOG1));
-    }
-
-    void showAddDog2UI() {
-        showAddDogUI(dog2CardView);
-        dog2CardView.setOnClickListener(v -> selectDog(SELECT_DOG2));
-    }
-
-    void showAddDogUI(CardView cardView) {
-        ImageView dogImageView = cardView.findViewById(R.id.contact_image);
-        TextView dogNameTextView = cardView.findViewById(R.id.contact_name);
-        ImageButton dogRemoveButton = cardView.findViewById(R.id.item_remove);
-        dogRemoveButton.setVisibility(View.INVISIBLE);
-        Picasso.get().load(R.drawable.ic_default_dog_24dp).into(dogImageView);
-        dogNameTextView.setText(getText(R.string.select_dog));
+        Picasso.get().load(owner.getPhotoUri()).placeholder(R.drawable.ic_default_owner_24dp).into(ownerImageView);
     }
 
     void selectImage() {
@@ -184,24 +146,12 @@ public class OwnerContactActivity extends AppCompatActivity {
                         resolver.takePersistableUriPermission(selectedImageUri, takeFlags);
                     }
                     Picasso.get().load(selectedImageUri).into(ownerImageView);
-                    mOwner.setPhoto(selectedImageUri.toString());
+                    mOwner.setPhotoUri(selectedImageUri.toString());
                     break;
-                case SELECT_DOG1: {
+                case SELECT_DOG: {
                     long dogId = data.getLongExtra(SelectDogActivity.DOG_ID, 0);
                     if (dogId == 0) break;
-                    mOwner.setDogId1(dogId);
-                    mWalkieViewModel.addOwnerToDog(mOwner.getOwnerId(), dogId);
-                    mWalkieViewModel.updateOwner(mOwner);
-                    showDog1UI(dogId);
-                    break;
-                }
-                case SELECT_DOG2: {
-                    long dogId = data.getLongExtra(SelectDogActivity.DOG_ID, 0);
-                    if (dogId == 0) break;
-                    mOwner.setDogId2(dogId);
-                    mWalkieViewModel.addOwnerToDog(mOwner.getOwnerId(), dogId);
-                    mWalkieViewModel.updateOwner(mOwner);
-                    showDog2UI(dogId);
+                    mWalkieViewModel.addOwnerToDog(mOwner.getId(), dogId);
                     break;
                 }
             }
@@ -210,15 +160,22 @@ public class OwnerContactActivity extends AppCompatActivity {
     }
 
 
-    void selectDog(int dogSlot) {
+    void selectDog() {
         if (mOwnerId == -1) {
-            mWalkieViewModel.insertOwner(mOwner).observe(this, this::setOwnerId);
+            mWalkieViewModel.insertOwner(mOwner).observe(this, this::setOwnerIdAndSelectDog);
+        } else {
+            Intent intent = new Intent(this, SelectDogActivity.class);
+            intent.putExtra(SelectDogActivity.OWNER_ID, mOwnerId);
+            startActivityForResult(intent, SELECT_DOG,
+                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         }
-        Intent intent = new Intent(this, SelectDogActivity.class);
-        startActivityForResult(intent, dogSlot,
-                ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 
+    void setOwnerIdAndSelectDog(long ownerId) {
+        setOwnerId(ownerId);
+        mWalkieViewModel.getOwnerDogs(mOwnerId).observe(this, dogs -> dogsList.setPhotos(dogs));
+        selectDog();
+    }
     void saveAndExit() {
         mOwner.setFirstName(ownerFirstName.getText().toString());
         mOwner.setLastName(ownerLastName.getText().toString());
@@ -228,36 +185,8 @@ public class OwnerContactActivity extends AppCompatActivity {
         new SaveAndExit().execute();
     }
 
-    void removeDog(long dogId, CardView cardView) {
-        if (mOwner.getDogId1() == dogId) {
-            mOwner.setDogId1(0);
-        } else if (mOwner.getDogId2() == dogId) {
-            mOwner.setDogId2(0);
-        }
-        mWalkieViewModel.updateOwner(mOwner);
-        mWalkieViewModel.removeDogFromOwner(mOwner.getOwnerId(), dogId);
-        showAddDogUI(cardView);
-    }
-
-    private class UpdateDog extends AsyncTask<Void, Dog, Dog> {
-        long dogId;
-        CardView cardView;
-
-        UpdateDog(long dogId, CardView cardView) {
-            this.cardView = cardView;
-            this.dogId = dogId;
-        }
-
-        @Override
-        protected Dog doInBackground(Void... voids) {
-            Dog dog = mWalkieViewModel.getDogByIdSync(dogId);
-            return dog;
-        }
-
-        @Override
-        protected void onPostExecute(Dog dog) {
-            showDogUI(dog, cardView);
-        }
+    void removeDog(long dogId) {
+        mWalkieViewModel.removeOwnerFromDog(mOwner.getId(), dogId);
     }
 
     private class SaveAndExit extends AsyncTask<Void, Void, Void> {

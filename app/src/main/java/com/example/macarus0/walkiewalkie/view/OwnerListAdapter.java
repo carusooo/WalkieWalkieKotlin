@@ -51,8 +51,8 @@ public class OwnerListAdapter extends RecyclerView.Adapter<OwnerListAdapter.View
     public void onBindViewHolder(@NonNull OwnerListAdapter.ViewHolder holder, int position) {
         Owner owner = this.mOwners.get(position);
         holder.ownerName.setText(owner.getFirstName() + " " + owner.getLastName());
-        Picasso.get().load(owner.getPhoto()).placeholder(R.drawable.ic_default_owner_24dp).into(holder.ownerImage);
-        holder.ownerId = owner.getOwnerId();
+        Picasso.get().load(owner.getPhotoUri()).placeholder(R.drawable.ic_default_owner_24dp).into(holder.ownerImage);
+        holder.ownerId = owner.getId();
     }
 
     @Override

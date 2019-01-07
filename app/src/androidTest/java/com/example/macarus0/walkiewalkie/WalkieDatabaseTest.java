@@ -6,7 +6,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.macarus0.walkiewalkie.data.Dog;
+import com.example.macarus0.walkiewalkie.data.BaseDog;
 import com.example.macarus0.walkiewalkie.data.DogDao;
 import com.example.macarus0.walkiewalkie.data.Owner;
 import com.example.macarus0.walkiewalkie.data.OwnerDao;
@@ -49,9 +49,9 @@ public class WalkieDatabaseTest {
     }
 
 
-    public void testDogName(String name, List<Dog> dogs) {
+    public void testDogName(String name, List<BaseDog> dogs) {
         ArrayList<String> dogNames = new ArrayList<>();
-        for (Dog dog :
+        for (BaseDog dog :
                 dogs) {
             dogNames.add(dog.getName());
         }
@@ -70,7 +70,7 @@ public class WalkieDatabaseTest {
     @Test
     public void addDog() {
         String dogName = "Pippin";
-        Dog dog = new Dog();
+        BaseDog dog = new BaseDog();
         dog.setName(dogName);
         mDogDao.insertDog(dog);
         mDogDao.getAllDogs().observeForever(dogs -> testDogName(dogName, dogs));
