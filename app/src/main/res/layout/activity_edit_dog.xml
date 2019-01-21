@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/contact_save_button"
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/contactSaveButton"
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
         android:background="@android:color/transparent"
@@ -15,8 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/contact_cancel_button"
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/contactCancelButton"
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
         android:background="@android:color/transparent"
@@ -26,60 +26,60 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
-        android:id="@+id/dog_photo"
+        android:id="@+id/dogPhoto"
         layout="@layout/photo_select"
         android:layout_width="100sp"
         android:layout_height="100sp"
         android:layout_margin="@dimen/card_two_line_image_vertical_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contact_save_button" />
+        app:layout_constraintTop_toBottomOf="@id/contactSaveButton" />
 
     <EditText
-        android:id="@+id/dog_name"
+        android:id="@+id/dogName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:textSize="@dimen/card_two_line_title_text_size"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/dog_photo"
-        app:layout_constraintTop_toBottomOf="@id/contact_save_button"
+        app:layout_constraintStart_toEndOf="@id/dogPhoto"
+        app:layout_constraintTop_toBottomOf="@id/contactSaveButton"
         tools:text="Doggy" />
 
     <EditText
-        android:id="@+id/dog_address"
+        android:id="@+id/dogAddress"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:lines="3"
         android:textSize="@dimen/card_two_line_title_text_size"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/dog_photo"
-        app:layout_constraintTop_toBottomOf="@id/dog_name"
+        app:layout_constraintStart_toEndOf="@id/dogPhoto"
+        app:layout_constraintTop_toBottomOf="@id/dogName"
         tools:text=" 123 Some Street \n City, State\n 12345" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/add_owner_button"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addOwnerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dog_address"
+        app:layout_constraintTop_toBottomOf="@id/dogAddress"
         tools:text="SELECT OWNER" />
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/owner_cards"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_owner_button">
+        app:layout_constraintTop_toBottomOf="@id/addOwnerButton">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/owner_card_rv"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ownerCardRecyclerView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
 
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
