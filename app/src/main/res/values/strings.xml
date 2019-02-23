@@ -19,7 +19,14 @@
     <string name="select_owner_photo_activity_title">Select an owner photo</string>
     <string name="save_contact_edits">SAVE</string>
     <string name="title_activity_owner_contact">OwnerContactActivity</string>
+
+    <!--Deletion Strings-->
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_delete_dog">Really delete this dog?</string>
+    <string name="confirm_delete_owner">Really delete this owner?</string>
+    <string name="dog_deleted">Dog deleted</string>
+    <string name="owner_deleted">Owner deleted</string>
 
     <!--Walk Strings-->
     <string name="start_walk">Start Walk</string>

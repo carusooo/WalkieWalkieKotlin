@@ -27,6 +27,9 @@ interface OwnerDao {
     @Insert
     fun insertOwner(vararg owners: Owner): LongArray
 
+    @Query("DELETE FROM owner WHERE owner.ownerId = :ownerId")
+    fun deleteOwner(ownerId: Long)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateOwner(vararg owners: Owner)
 }

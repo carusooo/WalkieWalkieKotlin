@@ -27,6 +27,9 @@ interface DogDao {
     @Insert
     fun insertDog(vararg dogs: Dog): LongArray
 
+    @Query("DELETE FROM dog WHERE dog.dogId = :dogId")
+    fun deleteDog(dogId: Long)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateDog(vararg dogs: Dog)
 

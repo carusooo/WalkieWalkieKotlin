@@ -41,7 +41,7 @@ class OwnerListAdapter : RecyclerView.Adapter<OwnerListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: OwnerListAdapter.ViewHolder, position: Int) {
         val owner = this.mOwners!![position]
-        holder.ownerName!!.text = owner.firstName + " " + owner.lastName
+        holder.ownerName.text = owner.firstName + " " + owner.lastName
         Picasso.get().load(owner.photoUri).placeholder(R.drawable.ic_default_owner_24dp).into(holder.ownerImage)
         holder.ownerId = owner.id
     }
@@ -56,15 +56,12 @@ class OwnerListAdapter : RecyclerView.Adapter<OwnerListAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         internal var ownerId: Long = 0
-
-        @BindView(R.id.owner_image)
-        @JvmField  var ownerImage: ImageView? = null
-
-        @BindView(R.id.owner_name)
-        @JvmField var ownerName: TextView? = null
+        var ownerImage: ImageView
+        var ownerName: TextView
 
         init {
-            ButterKnife.bind(this, itemView)
+            ownerName = itemView.findViewById(R.id.owner_name)
+            ownerImage = itemView.findViewById(R.id.owner_image)
             itemView.setOnClickListener(this)
         }
 

@@ -66,6 +66,11 @@ class WalkieViewModel(application: Application) : AndroidViewModel(application) 
         return rowId
     }
 
+    fun deleteOwner(ownerId: Long): Unit {
+        db.ownerDao.deleteOwner(ownerId)
+        db.dogOwnerDao.deleteOwner(ownerId)
+    }
+
     fun insertOwnerSync(owner: Owner): Long {
         return db.ownerDao.insertOwner(owner)[0]
     }
@@ -96,6 +101,12 @@ class WalkieViewModel(application: Application) : AndroidViewModel(application) 
         }
         Thread(r).start()
         return rowId
+    }
+
+    fun deleteDog(dogId: Long) {
+        db.dogDao.deleteDog(dogId)
+        db.dogOwnerDao.deleteDog(dogId)
+        db.walkWithDogsDao.deleteDog(dogId)
     }
 
     fun insertDogSync(dog: Dog): Long {

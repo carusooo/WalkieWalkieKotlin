@@ -10,7 +10,7 @@ class Owner : PhotoItem {
     @PrimaryKey(autoGenerate = true)
     var ownerId: Long = 0
 
-    override var photoUri: String = ""
+    override var photoUri: String? = null
 
     override var id: Long = 0
         get() = ownerId
@@ -24,7 +24,7 @@ class Owner : PhotoItem {
 
     var address: String = ""
 
-    override var name: String
+    override var name: String?
         get() = firstName
         set(value) {}
 

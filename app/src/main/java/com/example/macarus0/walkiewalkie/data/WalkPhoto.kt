@@ -12,7 +12,7 @@ class WalkPhoto : PhotoItem {
     override var id: Long = 0
         get() = photoId
 
-    override var photoUri: String = ""
-    override var name: String = ""
+    override var photoUri: String? = ""
+    override var name: String? = ""
     var walkId: Long = 0
 }

@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contact_root"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/contactSaveButton"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/a11y_save_changes"
-        android:src="@drawable/ic_check_black_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/contactCancelButton"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/a11y_cancel_changes"
-        android:src="@drawable/ic_close_black_24dp"
+    <include
+        android:id="@+id/contact_edit_header"
+        layout="@layout/contact_edit_header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dogPhoto"
+        />
+
+
 
     <include
         android:id="@+id/dogPhoto"
@@ -32,7 +24,7 @@
         android:layout_height="100sp"
         android:layout_margin="@dimen/card_two_line_image_vertical_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contactSaveButton" />
+        app:layout_constraintTop_toBottomOf="@id/contact_edit_header" />
 
     <EditText
         android:id="@+id/dogName"
@@ -43,7 +35,7 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/dogPhoto"
-        app:layout_constraintTop_toBottomOf="@id/contactSaveButton"
+        app:layout_constraintTop_toBottomOf="@id/contact_edit_header"
         tools:text="Doggy" />
 
     <EditText

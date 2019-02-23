@@ -5,11 +5,17 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-abstract class DogOwnerDao {
+interface DogOwnerDao {
     @Insert
-    abstract fun insert(vararg dogOwners: DogOwner)
+    fun insert(vararg dogOwners: DogOwner)
 
     @Query("DELETE FROM DogOwner WHERE DogOwner.dogId = :dogId AND DogOwner.ownerId = :ownerId")
-    abstract fun delete(dogId: Long, ownerId: Long)
+    fun delete(dogId: Long, ownerId: Long)
+
+    @Query("DELETE FROM DogOwner WHERE DogOwner.dogId = :dogId")
+    fun deleteDog(dogId: Long)
+
+    @Query("DELETE FROM DogOwner WHERE DogOwner.ownerId = :ownerId")
+    fun deleteOwner(ownerId: Long)
 
 }

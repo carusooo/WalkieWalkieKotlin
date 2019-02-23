@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/popupMessageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        style="@style/CardTitleText"
+        android:layout_margin="@dimen/card_list_margin"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        tools:text="Really delete this dog?"/>
+
+    <Button
+        android:id="@+id/popupOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/popupMessageTextView"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/button_to_button_margin"
+
+        tools:text="OK"/>
+
+    <Button
+        android:id="@+id/popupCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/popupMessageTextView"
+        android:layout_toStartOf="@id/popupOk"
+        android:layout_margin="@dimen/button_to_button_margin"
+
+        tools:text="Cancel"/>
+
+
+</RelativeLayout>

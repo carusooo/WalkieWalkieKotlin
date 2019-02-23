@@ -3,6 +3,7 @@ package com.example.macarus0.walkiewalkie.view
 
 import android.app.Activity
 import android.app.ActivityOptions
+import android.app.Dialog
 import androidx.lifecycle.Observer
 
 import android.content.Intent
@@ -11,6 +12,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
+import android.view.Gravity
+import android.widget.*
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProviders
 import com.example.macarus0.walkiewalkie.R
 import com.example.macarus0.walkiewalkie.data.Dog
@@ -18,6 +22,7 @@ import com.example.macarus0.walkiewalkie.data.Owner
 import com.example.macarus0.walkiewalkie.viewmodel.WalkieViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_edit_dog.*
+import kotlinx.android.synthetic.main.contact_edit_header.*
 import kotlinx.android.synthetic.main.photo_select.*
 import kotlinx.android.synthetic.main.photo_select.view.*
 
@@ -41,6 +46,7 @@ class DogContactActivity : AppCompatActivity() {
         editPhotoButton.setOnClickListener { _ -> selectImage() }
         contactSaveButton.setOnClickListener { _ -> saveAndExit() }
         contactCancelButton.setOnClickListener { _ -> finish() }
+        contactDeleteButton.setOnClickListener{ _ -> showDeleteConfirm() }
 
         ownersList = DeletablePhotoListAdapter()
         ownersList.showPhotoLabels = true
@@ -59,7 +65,11 @@ class DogContactActivity : AppCompatActivity() {
             showAddDogUI()
             mDog = Dog()
         } else {
-            mWalkieViewModel.getDogById(mDogId).observe(this, Observer<Dog> { this.showDogUI(requireNotNull(it)) })
+            val dogLiveData = mWalkieViewModel.getDogById(mDogId)
+            dogLiveData.observe(this, Observer {
+                showDogUI(it)
+                dogLiveData.removeObservers(this)
+            })
             mWalkieViewModel.getDogOwners(mDogId).observe(this, Observer<List<Owner>> { ownersList.photos = it })
         }
     }
@@ -138,6 +148,44 @@ class DogContactActivity : AppCompatActivity() {
         Log.i(TAG, "removeOwner: Attempting to remove owner $ownerId")
         mWalkieViewModel.removeOwnerFromDog(ownerId, mDog.id)
     }
+
+
+    private fun showDeleteConfirm() {
+        val popupWindow = Dialog(this)
+        popupWindow.setContentView(R.layout.popup_window)
+
+        var textView = popupWindow.findViewById<TextView>(R.id.popupMessageTextView)
+        textView.setText(R.string.confirm_delete_dog)
+        var okButton = popupWindow.findViewById<Button>(R.id.popupOk)
+        var cancelButton = popupWindow.findViewById<Button>(R.id.popupCancel)
+
+        okButton.setText(R.string.ok)
+        okButton.setOnClickListener{deleteDog()}
+        cancelButton.setText(R.string.cancel)
+        cancelButton.setOnClickListener{popupWindow.dismiss()}
+        popupWindow.show()
+    }
+
+    private fun deleteDog() {
+        Toast.makeText(this, R.string.dog_deleted, Toast.LENGTH_SHORT).show()
+        DeleteAndExit().execute()
+    }
+
+    private inner class DeleteAndExit : AsyncTask<Void, Void, Void>() {
+
+        override fun doInBackground(vararg voids: Void): Void? {
+            if (mDogId != -1L) {
+                Log.d("DogContactActivity", "Deleting dog")
+                mWalkieViewModel.deleteDog(mDogId)
+            }
+            return null
+        }
+
+        override fun onPostExecute(aVoid: Void?) {
+            finish()
+        }
+    }
+
 
     private inner class SaveAndExit : AsyncTask<Void, Void, Void>() {
 

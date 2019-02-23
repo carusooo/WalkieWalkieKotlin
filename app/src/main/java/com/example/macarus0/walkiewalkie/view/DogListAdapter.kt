@@ -41,7 +41,7 @@ class DogListAdapter : RecyclerView.Adapter<DogListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: DogListAdapter.ViewHolder, position: Int) {
         val dog = this.mDogs!![position]
-        holder.dogName!!.text = dog.name
+        holder.dogName.text = dog.name
         Picasso.get().load(dog.photoUri).placeholder(R.drawable.ic_default_dog_24dp).into(holder.dogImage)
         holder.dogId = dog.id
     }
@@ -59,13 +59,12 @@ class DogListAdapter : RecyclerView.Adapter<DogListAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         internal var dogId: Long = 0
+        var dogImage: ImageView
+        var dogName: TextView
 
-        @BindView(R.id.dog_image)
-        @JvmField internal var dogImage: ImageView? = null
-        @BindView(R.id.dogName)
-        @JvmField internal var dogName: TextView? = null
         init {
-            ButterKnife.bind(this, itemView)
+            dogName = itemView.findViewById(R.id.dogName)
+            dogImage = itemView.findViewById(R.id.dog_image)
             itemView.setOnClickListener(this)
         }
 

@@ -5,10 +5,13 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-abstract class WalkWithDogsDao {
+interface  WalkWithDogsDao {
     @Query("SELECT * from Dog JOIN walkwithdogs on Dog.dogId = walkWithDogs.dogId " + "WHERE walkId = :walkId")
-    abstract fun getDogsOnWalk(walkId: Long): List<Dog>
+    fun getDogsOnWalk(walkId: Long): List<Dog>
 
     @Insert
-    abstract fun insert(walkWithDogs: List<WalkWithDogs>)
+    fun insert(walkWithDogs: List<WalkWithDogs>)
+
+    @Query("DELETE FROM walkwithdogs WHERE walkwithdogs.dogId = :dogId")
+    fun deleteDog(dogId: Long)
 }

@@ -12,8 +12,8 @@ import androidx.room.PrimaryKey
     override var id: Long = 0
         get() = dogId
 
-    override var name: String = ""
-    override var photoUri: String = ""
+    override var name: String? = null
+    override var photoUri: String? = null
     var address: String = ""
 
 }
